@@ -13,9 +13,23 @@ from playwright.sync_api import expect, sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 KEY = "mo_mang_data_v1"
 ANSWER = "Đây là phần giải thích của mình, kèm một ví dụ và một giới hạn."
+RESPONSE = {"score":5,"feedback":"<strong>Gợi ý</strong>","improvements":["Đã thêm ví dụ."],
+    "recurringMistakes":[],"missingConcepts":["Nêu một giới hạn."],"followUpQuestion":"Ví dụ này có giới hạn gì?"}
 
 
 class QuietServer(SimpleHTTPRequestHandler):
+    test_update = False
+
+    def do_GET(self):
+        if self.test_update and self.path.split("?")[0]=="/mo-mang-app/sw.js":
+            source=(ROOT/"sw.js").read_bytes().replace(b"'3.0.0'",b"'3.0.1-test'")
+            self.send_response(200)
+            self.send_header("Content-Type","application/javascript")
+            self.end_headers()
+            self.wfile.write(source)
+            return
+        super().do_GET()
+
     def translate_path(self, path):
         if path.startswith("/mo-mang-app/"):
             path = f"/{ROOT.name}/" + path.removeprefix("/mo-mang-app/")
@@ -26,7 +40,26 @@ class QuietServer(SimpleHTTPRequestHandler):
 
 
 def state(page):
-    return page.evaluate("key => JSON.parse(localStorage.getItem(key))", KEY)
+    return page.evaluate("""async () => {
+        const db=await new Promise((resolve,reject)=>{
+            const open=indexedDB.open('mo-mang-v3');
+            open.onsuccess=()=>resolve(open.result);open.onerror=reject;
+        });
+        const tx=db.transaction(['settings','progress','attempts','learningPlans','topics','drafts']);
+        const read=req=>new Promise((resolve,reject)=>{req.onsuccess=()=>resolve(req.result);req.onerror=reject;});
+        const map=async name=>{
+            const store=tx.objectStore(name);
+            const [keys,values]=await Promise.all([read(store.getAllKeys()),read(store.getAll())]);
+            return Object.fromEntries(keys.map((id,i)=>[id,values[i]]));
+        };
+        const [meta,progress,attempts,learningPlan,customTopics,drafts]=await Promise.all([
+            read(tx.objectStore('settings').get('app')),map('progress'),
+            read(tx.objectStore('attempts').getAll()),read(tx.objectStore('learningPlans').get('active')),
+            read(tx.objectStore('topics').getAll()),map('drafts'),
+        ]);
+        db.close();
+        return {...meta,progress,attempts,learningPlan,customTopics,drafts};
+    }""")
 
 
 def nav(page, name):
@@ -48,6 +81,11 @@ def layout(browser, url, width, height):
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.goto(url)
     expect(page.locator("#plan-day")).to_contain_text("1/28")
+    assert page.evaluate("""async () => {
+        const faces=await document.fonts.load('600 16px "Noto Sans"', 'ấ ệ đ ư ỡ');
+        return faces.length>0 && document.fonts.check('600 16px "Noto Sans"', 'ấ ệ đ ư ỡ')
+            && getComputedStyle(document.body).fontFamily.includes('Noto Sans');
+    }""")
     for name in ("track", "explore", "progress", "settings", "home"):
         nav(page,name)
         dimensions=page.evaluate("({width:innerWidth,scroll:document.documentElement.scrollWidth})")
@@ -60,7 +98,8 @@ def layout(browser, url, width, height):
         page.set_viewport_size({"width":width,"height":310})
         page.wait_for_function("""() => {
             const box=document.querySelector('#answer-input').getBoundingClientRect();
-            return box.top>=visualViewport.offsetTop-1 && box.bottom<=visualViewport.offsetTop+visualViewport.height+1;
+            const submit=document.querySelector('#self-grade').getBoundingClientRect();
+            return box.top>=visualViewport.offsetTop-1 && submit.bottom<=visualViewport.offsetTop+visualViewport.height+1;
         }""",timeout=5000)
         expect(page.locator(".bottom-nav")).to_be_hidden()
     assert not errors,errors
@@ -80,12 +119,13 @@ def workflow(browser,url):
     if screenshot_dir:
         out=Path(screenshot_dir)
         out.mkdir(parents=True,exist_ok=True)
-        page.screenshot(path=out/"mo-mang-hom-nay.png",full_page=True)
+        page.screenshot(path=out/"mo-mang-v3-hom-nay.png",full_page=True,animations="disabled")
         nav(page,"track")
-        page.screenshot(path=out/"mo-mang-chuyen-de.png",full_page=True)
+        page.screenshot(path=out/"mo-mang-v3-chuyen-de.png",full_page=True,animations="disabled")
         nav(page,"home")
     due_before=page.locator("#home-due").inner_text()
     page.get_by_role("button",name="Đổi câu hỏi").click()
+    expect(page.locator("#daily-card h3")).not_to_contain_text("hai bán cầu")
     topic=page.locator("#daily-card h3").inner_text()
     page.reload()
     expect(page.locator("#daily-card h3")).to_have_text(topic)
@@ -158,13 +198,14 @@ def workflow(browser,url):
     with page.expect_request("https://generativelanguage.googleapis.com/**"):
         grade.evaluate("(button) => {button.click();button.click()}")
     expect(grade).to_be_disabled()
-    response["route"].fulfill(json={"candidates":[{"content":{"parts":[{"text":"{\"score\":5,\"feedback\":\"<strong>Gợi ý</strong>\"}"}]}}]})
+    response["route"].fulfill(json={"candidates":[{"content":{"parts":[{"text":json.dumps(RESPONSE)}]}}]})
     expect(page.locator("#assessment-feedback")).to_have_text("<strong>Gợi ý</strong>")
     assert page.locator("#assessment-feedback strong").count()==0
     assert len(calls)==1
     assert state(page)["stats"]["totalReviews"]==2
     page.get_by_role("radio",name="4/5: Khá rõ").click()
     page.locator("#save-assessment").click()
+    expect(page.locator("#completion-pane")).to_be_visible()
     assert state(page)["progress"]["geo_delta"]["lastScore"]==4
     assert state(page)["progress"]["geo_delta"]["intervalDays"]==1
     nav(page,"explore")
@@ -184,11 +225,12 @@ def workflow(browser,url):
     page.on("dialog",lambda dialog:dialog.accept())
     page.locator("#import-file").set_input_files({"name":"backup.json","mimeType":"application/json","buffer":raw.encode()})
     expect(page.locator("#notice")).to_contain_text("Đã khôi phục")
+    assert len(state(page)["attempts"])==4
     cache=page.evaluate("""async ()=> {
         const key=(await caches.keys()).find(k=>k.startsWith('mo-mang-shell:'));
         return (await (await caches.open(key)).keys()).map(r=>new URL(r.url).pathname);
     }""")
-    assert len(cache)==12 and any(path.endswith("/content/curriculum-c-28-days.json") for path in cache)
+    assert len(cache)==16 and any(path.endswith("/content/curriculum-c-28-days.json") for path in cache)
     context.set_offline(True)
     page.goto(url+"?offline=1#track")
     expect(page.locator(".chapter-card")).to_have_count(4)
@@ -199,6 +241,122 @@ def workflow(browser,url):
     assert not errors,errors
     print("PASS Chromium workflow: plan, SM-2, synthesis, mock API, backup, Pages subpath and offline",flush=True)
     context.close()
+
+def migration_and_formats(browser,url):
+    context=browser.new_context(accept_downloads=True)
+    page=context.new_page()
+    legacy={
+        "version":1,"revision":3,
+        "progress":{"geo_seasons":{"reps":2,"easeFactor":2.6,"intervalDays":6,"nextReview":"2033-01-07",
+            "lastScore":4,"lastReviewed":"2026-01-01","history":[{"date":"2026-01-01","score":4,"feedback":"Lượt V1"}]}},
+        "customTopics":[{"id":"ai_legacy01","category":"geo","title":"Chủ đề cũ","question":"Câu hỏi cũ?",
+            "reference":"Giải thích cũ","checkpoints":[]}],
+        "stats":{"totalReviews":1,"completedDates":["2026-01-01"]},
+    }
+    legacy_raw=json.dumps(legacy)
+    context.add_init_script(f"""if(localStorage.getItem({json.dumps(KEY)})===null) {{
+        localStorage.setItem({json.dumps(KEY)},{json.dumps(legacy_raw)});
+        localStorage.setItem('mo_mang_draft_v1_geo_seasons','Nháp được giữ khi chuyển đổi');
+    }}""")
+    page.goto(url)
+    expect(page.locator("#plan-day")).to_be_visible()
+    assert state(page)["attempts"][0]["answer"] is None
+    assert state(page)["drafts"]["geo_seasons"]=="Nháp được giữ khi chuyển đổi"
+    assert state(page)["customTopics"][0]["id"]=="ai_legacy01"
+    assert page.evaluate("key=>localStorage.getItem(key)",KEY)==legacy_raw
+    page.reload()
+    expect(page.locator("#plan-day")).to_be_visible()
+    assert len(state(page)["attempts"])==1
+    nav(page,"explore")
+    page.locator("#topic-search").fill("hai bán cầu")
+    page.locator(".topic-card").first.click()
+    expect(page.locator("#answer-input")).to_have_value("Nháp được giữ khi chuyển đổi")
+    page.locator("#study-form").select_option("quiz")
+    page.locator("#quiz-options input").first.check()
+    page.locator("#quiz-check").click()
+    expect(page.locator(".quiz-reasons li")).to_have_count(4)
+    page.locator("#save-assessment").click()
+    expect(page.locator("#completion-pane")).to_be_visible()
+    assert state(page)["progress"]["geo_seasons"]["nextReview"]=="2033-01-07"
+    page.locator("#study-form").select_option("scenario")
+    page.locator("#answer-input").fill("  "+ANSWER+"  ")
+    finish(page)
+    page.locator("#study-form").select_option("essay")
+    page.locator("#answer-input").fill(ANSWER+" Đây là lần tự luận.")
+    finish(page)
+    saved=state(page)
+    assert len(saved["attempts"])==4
+    assert saved["progress"]["geo_seasons"]["nextReview"]=="2033-01-07"
+    assert any(a["answer"]=="  "+ANSWER+"  " and a["mode"]=="scenario" for a in saved["attempts"])
+    nav(page,"settings")
+    fixture=str(uuid4())
+    page.locator("#api-key-input").fill(fixture)
+    page.locator("#save-key").click()
+    nav(page,"explore")
+    page.locator("#topic-search").fill("hai bán cầu")
+    page.locator(".topic-card").first.click()
+    page.locator("#study-form").select_option("essay")
+    page.locator("#answer-input").fill(ANSWER+" Thêm ví dụ về độ dài ngày.")
+    sent=[]
+
+    def compare(route):
+        sent.append(route.request.post_data_json["contents"][0]["parts"][0]["text"])
+        route.fulfill(json={"candidates":[{"content":{"parts":[{"text":json.dumps(RESPONSE)}]}}]})
+
+    context.route("https://generativelanguage.googleapis.com/**",compare)
+    page.locator("#ai-grade").click()
+    expect(page.locator("#analysis-details")).to_contain_text("Đã thêm ví dụ.")
+    assert len(sent)==1 and "Đây là lần tự luận." in sent[0]
+    assert all(a["answer"] not in sent[0] for a in saved["attempts"] if a["mode"]=="quiz")
+    assert "Lượt V1" not in sent[0]
+    page.get_by_role("radio",name="4/5: Khá rõ").click()
+    page.locator("#save-assessment").click()
+    expect(page.locator("#completion-pane")).to_be_visible()
+    nav(page,"progress")
+    page.locator("#history-filter").select_option("geo_seasons")
+    expect(page.locator(".history-entry")).to_have_count(5)
+    page.locator(".history-entry summary").last.click()
+    expect(page.locator(".history-entry").last).to_contain_text("Bản cũ chưa lưu")
+    nav(page,"settings")
+    with page.expect_download() as event:
+        page.locator("#export-data").click()
+    restored=json.loads(event.value.path().read_text(encoding="utf-8"))
+    assert restored["schemaVersion"]==3 and len(restored["attempts"])==5
+    assert fixture not in json.dumps(restored)
+    if url.startswith("http://127.0.0.1"):
+        page.wait_for_function("() => Boolean(navigator.serviceWorker.controller)")
+        QuietServer.test_update=True
+        try:
+            page.evaluate("async () => { const reg=await navigator.serviceWorker.getRegistration(); await reg.update(); }")
+            page.wait_for_function("async () => Boolean((await navigator.serviceWorker.getRegistration()).waiting)")
+            page.close()
+            page=context.new_page()
+            page.goto(url+"#progress")
+            page.wait_for_function("""async () => {
+                const keys=await caches.keys();
+                return keys.some(key=>key.endsWith('3.0.1-test')) && !keys.some(key=>key.endsWith('3.0.0'));
+            }""")
+            assert len(state(page)["attempts"])==5
+        finally:
+            QuietServer.test_update=False
+    assert page.evaluate("key=>localStorage.getItem(key)",KEY)==legacy_raw
+    print("PASS IndexedDB migration, reload, all formats, raw answers, same-day scheduling and backup",flush=True)
+    context.close()
+
+def storage_denied(browser,url):
+    context=browser.new_context()
+    context.add_init_script("""Object.defineProperty(window, 'indexedDB', {
+        get(){throw new DOMException('Denied','SecurityError');}
+    });""")
+    page=context.new_page()
+    page.goto(url)
+    expect(page.locator("#plan-day")).to_be_visible()
+    page.locator("#hero-start").click()
+    page.locator("#answer-input").fill(ANSWER)
+    expect(page.locator("#draft-indicator")).to_contain_text("Nháp chỉ còn trong tab")
+    expect(page.locator("#answer-input")).to_have_value(ANSWER)
+    context.close()
+    print("PASS IndexedDB denied: online reading and in-memory draft remain available",flush=True)
 
 
 def main(url=None):
@@ -215,6 +373,8 @@ def main(url=None):
                     layout(browser,url,width,height)
                 if engine.name=="chromium":
                     workflow(browser,url)
+                    migration_and_formats(browser,url)
+                    storage_denied(browser,url)
                 browser.close()
     finally:
         if server is not None:

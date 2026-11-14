@@ -1,1 +1,1 @@
-{"name":"mo-mang","version":"2.0.0","private":true,"type":"module","description":"Khám phá, chuyên đề và Active Recall với SM-2","scripts":{"test":"node --test tests/*.test.js","dev":"python -m http.server 8080 --bind 127.0.0.1"}}
+{"name":"mo-mang","version":"3.0.0","private":true,"type":"module","description":"Khám phá, chuyên đề và Active Recall với SM-2","scripts":{"test":"node --test tests/*.test.js","dev":"python -m http.server 8080 --bind 127.0.0.1"}}

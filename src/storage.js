@@ -14,7 +14,7 @@ export function newState(){
   };
 }
 function isObject(x){return x!==null&&typeof x==='object'&&!Array.isArray(x)}
-const safeId = id => /^[a-z][a-z0-9_-]{0,100}$/i.test(id) && !['constructor','prototype'].includes(id);
+export const safeId = id => typeof id==='string' && /^[a-z][a-z0-9_-]{0,115}$/i.test(id) && !['constructor','prototype'].includes(id);
 const validScore = score => Number.isInteger(score) && score >= 1 && score <= 5;
 export function validateState(input){
   if(!isObject(input)||![1,STATE_VERSION].includes(input.version)||!isObject(input.progress)||!isObject(input.stats)||!Array.isArray(input.customTopics))throw new Error('File dữ liệu không đúng cấu trúc MỞ MANG.');
@@ -33,7 +33,7 @@ export function validateState(input){
     const history=p.history.map(h=>{
       if(!isObject(h)||!validDate(h.date)||!validScore(h.score))throw new Error('Có lượt ôn không hợp lệ.');
       return {date:h.date,score:h.score,feedback:typeof h.feedback==='string'?h.feedback:'',
-        ...(h.source==='ai'||h.source==='self'?{source:h.source}:{}),...(typeof h.due==='boolean'?{due:h.due}:{})};
+        ...(['ai','self','offline'].includes(h.source)?{source:h.source}:{}),...(typeof h.due==='boolean'?{due:h.due}:{})};
     });
     progress[id]={reps:p.reps,easeFactor:p.easeFactor,intervalDays:p.intervalDays,nextReview:p.nextReview,history,
       ...(validScore(p.lastScore)?{lastScore:p.lastScore}:{}),...(validDate(p.lastReviewed)?{lastReviewed:p.lastReviewed}:{}),
