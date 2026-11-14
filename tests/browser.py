@@ -75,7 +75,7 @@ def workflow(browser,url):
     page.on("pageerror",lambda error:errors.append(str(error)))
     page.goto(url)
     expect(page.locator("#plan-day")).to_contain_text("1/28")
-    page.wait_for_function("navigator.serviceWorker.controller")
+    page.wait_for_function("() => Boolean(navigator.serviceWorker.controller)")
     screenshot_dir=os.getenv("MO_MANG_SCREENSHOTS")
     if screenshot_dir:
         out=Path(screenshot_dir)

@@ -29,9 +29,10 @@ npm test
 python -m pip install playwright
 python -m playwright install chromium webkit
 python tests/browser.py
+python tests/browser.py https://doquoctan-514.github.io/mo-mang-app/
 ```
 
-Bộ unit cần Node.js 18+. Bộ trình duyệt dùng localhost dưới đường dẫn con và API mock. Đặt `MO_MANG_SCREENSHOTS` trỏ tới thư mục đầu ra để lưu ảnh giao diện.
+Bộ unit cần Node.js 18+. Bộ trình duyệt dùng localhost dưới đường dẫn `/mo-mang-app/` mặc định, hoặc URL HTTPS truyền ở cuối lệnh. Cả hai dùng hồ sơ trình duyệt tạm và API mock. Đặt `MO_MANG_SCREENSHOTS` trỏ tới thư mục đầu ra để lưu ảnh giao diện.
 
 ### Kết quả bàn giao
 
@@ -41,13 +42,13 @@ Bộ unit cần Node.js 18+. Bộ trình duyệt dùng localhost dưới đườ
 | Playwright giao diện | **10/10 PASS.** Chromium và WebKit ở 320×568, 360×780, 390×844, 430×932 và 1366×768. Mô phỏng vùng nhìn thu nhỏ khi textarea đang được focus. |
 | Playwright luồng học | **PASS.** Khám phá ổn định qua reload; đọc đáp án, tự chấm, nộp lặp, học bài sâu ngoài thứ tự, tổng hợp, backup round-trip, offline và GitHub Pages subpath. |
 | AI mock | **PASS.** 401, 429, 503, JSON sai, mất mạng, timeout 22 giây giữ bài viết; nhấp đúp gửi một request; chốt điểm thủ công và lưu đề xuất AI ở dạng nháp. |
-| API thật, Android/iOS thật, triển khai công khai | Chưa xác minh. Workspace chưa có repo đích được chỉ định. |
+| API thật và Android/iOS thật | Chưa xác minh. |
 
 File runtime thay đổi gồm `index.html`, `styles.css`, `src/app.js`, `src/storage.js`, `src/scheduler.js`, `src/ai.js`, `sw.js`, `package.json` và trường trạng thái trong JSON lộ trình. Module mới là `src/curriculum.js`. Bộ kiểm thử thêm `tests/curriculum.test.js` và `tests/browser.py`, cập nhật `tests/storage.test.js`. Hai file cấu hình phát hành là `.nojekyll` và `.gitignore`. Xem thêm `READ_ME_FIRST_V2.md` để định vị bản bàn giao.
 
 ## GitHub Pages
 
-Repo dùng **Settings → Pages → Source → GitHub Actions**. Workflow `.github/workflows/pages.yml` chạy unit test khi push lên `main` và chỉ xuất bản HTML, CSS, JavaScript, icon, manifest, service worker và JSON lộ trình. GitHub cung cấp URL HTTPS, có dạng `https://OWNER.github.io/mo-mang-app/`. Giữ file backup và khóa API ngoài repo.
+[Mở website MỞ MANG](https://doquoctan-514.github.io/mo-mang-app/#home). Repo dùng **Settings → Pages → Source → GitHub Actions**. Workflow `.github/workflows/pages.yml` chạy unit test khi push lên `main` và chỉ xuất bản HTML, CSS, JavaScript, icon, manifest, service worker và JSON lộ trình. Giữ file backup và khóa API ngoài repo.
 
 Khi cập nhật bằng Codex, mở thư mục chứa `index.html`, mô tả thay đổi và yêu cầu chạy `npm test`, kiểm tra diff, commit, push lên `main` rồi theo dõi workflow **Publish MỞ MANG**. Tăng phiên bản cache trong `sw.js` mỗi lần sửa một file trong app shell. Khi có bản mới, đóng các tab app cũ rồi mở lại để worker mới kích hoạt.
 
