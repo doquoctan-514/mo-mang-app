@@ -99,7 +99,8 @@ button, summary { min-height:44px; }
 @media(max-width:700px) {
   .pilot-grid { grid-template-columns:1fr; }
   #deep-session > .btn { width:100%; margin-right:0; }
-  body:has(#deep-answer:focus) .bottom-nav { display:none; }
+  body:has(#page-deep:not(.hidden)) .bottom-nav { display:none; }
+  html:has(#page-deep:not(.hidden)) { scroll-behavior:auto; }
 }
 .study-format label, #history-panel label { font-weight:700; color:#315e4f; }
 .study-format select, #history-filter { min-height:44px; max-width:100%; border:1px solid #dce7dc; border-radius:10px; background:#fff; color:var(--ink); padding:7px 12px; font-size:16px; }

@@ -373,7 +373,8 @@ def storage_denied(browser,url):
 
 
 def deep_pilot(browser,url,width,status):
-    context=browser.new_context(viewport={"width":width,"height":790},is_mobile=True,has_touch=True,accept_downloads=True)
+    context=browser.new_context(viewport={"width":width,"height":790},is_mobile=True,has_touch=True,
+                                accept_downloads=True,reduced_motion="reduce")
     if browser.browser_type.name=="webkit":
         context.add_init_script("""{
             const originalFetch=window.fetch.bind(window);
@@ -404,15 +405,35 @@ def deep_pilot(browser,url,width,status):
         root.locator("summary").get_by_text("Dạy tôi từ đầu").click()
         expect(root).to_contain_text("Tigris và Euphrates")
     page.locator("#deep-answer").fill(ANSWER)
+    expect(page.locator("#deep-answer")).to_have_value(ANSWER)
+    expect(root.get_by_role("button",name="Sang bước phản biện")).to_be_enabled()
     page.set_viewport_size({"width":width,"height":310})
     page.wait_for_function("""() => {
         const input=document.querySelector('#deep-answer'), next=input.nextElementSibling;
         return input.getBoundingClientRect().top >= visualViewport.offsetTop-1
             && next.getBoundingClientRect().bottom <= visualViewport.offsetTop+visualViewport.height+1;
-    }""")
+    }""",timeout=5000)
     page.set_viewport_size({"width":width,"height":790})
+    page.locator("#deep-answer").blur()
     expect(root.locator("[data-draft-status]")).to_have_text("Đã lưu trên thiết bị")
-    page.reload()
+    location=page.url
+    assert "#deep/" in location
+    record_id=location.rsplit("/",1)[-1]
+    def stored_initial():
+        return page.evaluate("""id=>new Promise((resolve,reject)=>{
+            const open=indexedDB.open('mo-mang-v3');
+            open.onsuccess=()=>{
+                const db=open.result;
+                const request=db.transaction('learningPlans').objectStore('learningPlans').get('deep:'+id);
+                request.onsuccess=()=>{db.close();resolve(request.result?.initial)};
+                request.onerror=reject;
+            };
+            open.onerror=reject;
+        })""",record_id)
+    assert stored_initial()==ANSWER
+    page.goto("about:blank")
+    page.goto(location)
+    assert stored_initial()==ANSWER
     expect(page.locator("#deep-answer")).to_have_value(ANSWER)
     page.get_by_role("button",name="Sang bước phản biện").click()
     expect(root).to_contain_text("Bước 2/5")
@@ -468,6 +489,7 @@ def deep_pilot(browser,url,width,status):
     assert state(page)["stats"]["totalReviews"]==1
     if status==200:
         context.set_offline(False)
+    root.get_by_role("button",name="Về Hôm nay").click()
     nav(page,"progress")
     expect(page.locator("#deep-history")).to_contain_text("Vận dụng được")
     nav(page,"settings")
@@ -480,6 +502,18 @@ def deep_pilot(browser,url,width,status):
     page.on("dialog",lambda dialog:dialog.accept())
     page.locator("#import-file").set_input_files({"name":"backup.json","mimeType":"application/json","buffer":raw.encode()})
     expect(page.locator("#notice")).to_contain_text("Đã khôi phục")
+    if status==200:
+        nav(page,"home")
+        context.set_offline(True)
+        page.locator(".pilot-card").nth(2).get_by_role("button").click()
+        expect(root).to_contain_text("GDP nói gì")
+        page.locator("#deep-answer").fill(ANSWER)
+        root.get_by_role("button",name="Sang bước phản biện").click()
+        root.get_by_role("button",name="Tự đối chiếu và viết lại").click()
+        page.locator("#deep-answer").fill(ANSWER+" GDP đo sản lượng trong một kỳ.")
+        root.get_by_role("button",name="Sang bước vận dụng").click()
+        expect(root).to_contain_text("thu nhập khả dụng trung vị")
+        assert len(calls)==1
     assert not errors,errors
     context.close()
     print(f"PASS deep pilot {browser.browser_type.name} {width}px: five stages, resume, AI {status}, history and restore",flush=True)

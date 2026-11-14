@@ -39,6 +39,8 @@ export function createDeepView({root,getState,commit,notify,getAI,goHome,openPra
   function edit(patch){
     session={...session,...patch};
     pending.set(session.id,session);
+    const status=root.querySelector('[data-draft-status]');
+    if(status)status.textContent='Đang lưu…';
     flush();
   }
   async function advance(patch){
@@ -114,7 +116,12 @@ export function createDeepView({root,getState,commit,notify,getAI,goHome,openPra
     const next=button(buttonLabel,()=>advance({[key]:input.value,stage:nextStage,
       ...(key==='initial'?{recallOn:localDate()}:{})}),true);
     next.disabled=!input.value.trim();
-    input.addEventListener('input',()=>{next.disabled=!input.value.trim();edit({[key]:input.value});});
+    const sync=()=>{
+      next.disabled=!input.value.trim();
+      if(session[key]!==input.value)edit({[key]:input.value});
+    };
+    input.addEventListener('input',sync);
+    input.addEventListener('change',sync);
     target.append(heading,input,next);
   }
   function summary(lesson,target){
@@ -172,13 +179,8 @@ export function createDeepView({root,getState,commit,notify,getAI,goHome,openPra
     if(!active||!input||document.activeElement!==input)return;
     const rect=input.getBoundingClientRect(), next=input.nextElementSibling.getBoundingClientRect();
     const top=window.visualViewport?.offsetTop??0,height=window.visualViewport?.height??innerHeight;
-    if(rect.top<top||next.bottom>top+height){
-      window.scrollTo({top:window.scrollY+rect.top-top-8,behavior:'instant'});
-    }
+    if(rect.top<top||next.bottom>top+height)input.scrollIntoView({block:'center',behavior:'instant'});
   }
-  root.addEventListener('focusin',event=>{
-    if(event.target.tagName==='TEXTAREA')requestAnimationFrame(keepVisible);
-  });
   window.visualViewport?.addEventListener('resize',()=>requestAnimationFrame(keepVisible));
   window.addEventListener('resize',()=>requestAnimationFrame(keepVisible));
   function render(moveFocus=false){
