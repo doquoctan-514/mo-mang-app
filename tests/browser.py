@@ -22,7 +22,7 @@ class QuietServer(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         if self.test_update and self.path.split("?")[0]=="/mo-mang-app/sw.js":
-            source=(ROOT/"sw.js").read_bytes().replace(b"'3.0.0'",b"'3.0.1-test'")
+            source=(ROOT/"sw.js").read_bytes().replace(b"'3.1.0'",b"'3.1.1-test'")
             self.send_response(200)
             self.send_header("Content-Type","application/javascript")
             self.end_headers()
@@ -66,6 +66,13 @@ def nav(page, name):
     page.locator(f'button[data-nav="{name}"]:visible').first.click()
 
 
+def enter_v3(page):
+    link=page.get_by_role("button",name="Mở bài theo cách V3")
+    expect(link.or_(page.locator("#answer-input:visible"))).to_be_visible()
+    if link.is_visible():
+        link.click()
+
+
 def finish(page):
     page.locator("#self-grade").click()
     page.get_by_role("radio", name="4/5: Khá rõ").click()
@@ -93,6 +100,7 @@ def layout(browser, url, width, height):
     small = page.locator("button:visible").evaluate_all("buttons => buttons.filter(b=>b.offsetHeight<44||b.offsetWidth<44).map(b=>b.id||b.textContent)")
     assert not small, small
     page.locator("#hero-start").click()
+    enter_v3(page)
     page.locator("#answer-input").focus()
     if mobile:
         page.set_viewport_size({"width":width,"height":310})
@@ -131,6 +139,7 @@ def workflow(browser,url):
     expect(page.locator("#daily-card h3")).to_have_text(topic)
     expect(page.locator("#home-due")).to_have_text(due_before)
     page.get_by_role("button",name="Tôi muốn giải thích").click()
+    enter_v3(page)
     page.locator("#show-reference").click()
     expect(page.locator("#save-assessment")).to_be_hidden()
     assert not state(page)["progress"]
@@ -161,6 +170,7 @@ def workflow(browser,url):
     page.locator("#save-key").click()
     nav(page,"track")
     first.locator(".lesson-button").first.click()
+    enter_v3(page)
     page.locator("#answer-input").fill(ANSWER)
     calls=[]
     response={"status":401}
@@ -230,7 +240,7 @@ def workflow(browser,url):
         const key=(await caches.keys()).find(k=>k.startsWith('mo-mang-shell:'));
         return (await (await caches.open(key)).keys()).map(r=>new URL(r.url).pathname);
     }""")
-    assert len(cache)==16 and any(path.endswith("/content/curriculum-c-28-days.json") for path in cache)
+    assert len(cache)==18 and any(path.endswith("/content/curriculum-c-28-days.json") for path in cache)
     context.set_offline(True)
     page.goto(url+"?offline=1#track")
     expect(page.locator(".chapter-card")).to_have_count(4)
@@ -270,6 +280,7 @@ def migration_and_formats(browser,url):
     nav(page,"explore")
     page.locator("#topic-search").fill("hai bán cầu")
     page.locator(".topic-card").first.click()
+    enter_v3(page)
     expect(page.locator("#answer-input")).to_have_value("Nháp được giữ khi chuyển đổi")
     page.locator("#study-form").select_option("quiz")
     page.locator("#quiz-options input").first.check()
@@ -295,6 +306,7 @@ def migration_and_formats(browser,url):
     nav(page,"explore")
     page.locator("#topic-search").fill("hai bán cầu")
     page.locator(".topic-card").first.click()
+    enter_v3(page)
     page.locator("#study-form").select_option("essay")
     page.locator("#answer-input").fill(ANSWER+" Thêm ví dụ về độ dài ngày.")
     sent=[]
@@ -321,7 +333,7 @@ def migration_and_formats(browser,url):
     with page.expect_download() as event:
         page.locator("#export-data").click()
     restored=json.loads(event.value.path().read_text(encoding="utf-8"))
-    assert restored["schemaVersion"]==3 and len(restored["attempts"])==5
+    assert restored["schemaVersion"]==4 and len(restored["attempts"])==5
     assert fixture not in json.dumps(restored)
     if url.startswith("http://127.0.0.1"):
         page.wait_for_function("() => Boolean(navigator.serviceWorker.controller)")
@@ -334,7 +346,7 @@ def migration_and_formats(browser,url):
             page.goto(url+"#progress")
             page.wait_for_function("""async () => {
                 const keys=await caches.keys();
-                return keys.some(key=>key.endsWith('3.0.1-test')) && !keys.some(key=>key.endsWith('3.0.0'));
+                return keys.some(key=>key.endsWith('3.1.1-test')) && !keys.some(key=>key.endsWith('3.1.0'));
             }""")
             assert len(state(page)["attempts"])==5
         finally:
@@ -352,11 +364,159 @@ def storage_denied(browser,url):
     page.goto(url)
     expect(page.locator("#plan-day")).to_be_visible()
     page.locator("#hero-start").click()
+    enter_v3(page)
     page.locator("#answer-input").fill(ANSWER)
     expect(page.locator("#draft-indicator")).to_contain_text("Nháp chỉ còn trong tab")
     expect(page.locator("#answer-input")).to_have_value(ANSWER)
     context.close()
     print("PASS IndexedDB denied: online reading and in-memory draft remain available",flush=True)
+
+
+def deep_pilot(browser,url,width,status):
+    context=browser.new_context(viewport={"width":width,"height":790},is_mobile=True,has_touch=True,
+                                accept_downloads=True,reduced_motion="reduce")
+    if browser.browser_type.name=="webkit":
+        context.add_init_script("""{
+            const originalFetch=window.fetch.bind(window);
+            window.fetch=(url, options)=>{
+                if(String(url).startsWith('https://generativelanguage.googleapis.com/')){
+                    sessionStorage.setItem('mock-ai-calls',String(Number(sessionStorage.getItem('mock-ai-calls')||0)+1));
+                    return Promise.resolve(new Response('{}',{status:429}));
+                }
+                return originalFetch(url,options);
+            };
+        }""")
+    page=context.new_page()
+    errors=[]
+    page.on("pageerror",lambda error:errors.append(str(error)))
+    page.goto(url)
+    expect(page.locator("#plan-day")).to_be_visible()
+    nav(page,"settings")
+    fixture=str(uuid4())
+    page.locator("#api-key-input").fill(fixture)
+    page.locator("#save-key").click()
+    nav(page,"home")
+    expect(page.locator(".pilot-card")).to_have_count(3)
+    card=page.locator(".pilot-card").nth(0 if status==200 else 1)
+    card.get_by_role("button").click()
+    root=page.locator("#deep-session")
+    expect(root).to_contain_text("Bước 1/5")
+    if status==429:
+        root.locator("summary").get_by_text("Dạy tôi từ đầu").click()
+        expect(root).to_contain_text("Tigris và Euphrates")
+    page.locator("#deep-answer").fill(ANSWER)
+    expect(page.locator("#deep-answer")).to_have_value(ANSWER)
+    expect(root.get_by_role("button",name="Sang bước phản biện")).to_be_enabled()
+    page.set_viewport_size({"width":width,"height":310})
+    page.wait_for_function("""() => {
+        const input=document.querySelector('#deep-answer'), next=input.nextElementSibling;
+        return input.getBoundingClientRect().top >= visualViewport.offsetTop-1
+            && next.getBoundingClientRect().bottom <= visualViewport.offsetTop+visualViewport.height+1;
+    }""",timeout=5000)
+    page.set_viewport_size({"width":width,"height":790})
+    page.locator("#deep-answer").blur()
+    expect(root.locator("[data-draft-status]")).to_have_text("Đã lưu trên thiết bị")
+    location=page.url
+    assert "#deep/" in location
+    record_id=location.rsplit("/",1)[-1]
+    def stored_initial():
+        return page.evaluate("""id=>new Promise((resolve,reject)=>{
+            const open=indexedDB.open('mo-mang-v3');
+            open.onsuccess=()=>{
+                const db=open.result;
+                const request=db.transaction('learningPlans').objectStore('learningPlans').get('deep:'+id);
+                request.onsuccess=()=>{db.close();resolve(request.result?.initial)};
+                request.onerror=reject;
+            };
+            open.onerror=reject;
+        })""",record_id)
+    assert stored_initial()==ANSWER
+    page.goto("about:blank")
+    page.goto(location)
+    assert stored_initial()==ANSWER
+    expect(page.locator("#deep-answer")).to_have_value(ANSWER)
+    page.get_by_role("button",name="Sang bước phản biện").click()
+    expect(root).to_contain_text("Bước 2/5")
+    calls=[]
+
+    def provider(route):
+        calls.append(route.request.url)
+        assert fixture not in route.request.url
+        if status==429:
+            route.fulfill(status=429,body="{}")
+        else:
+            result={"strength":"<strong>Bạn đã nêu cơ chế.</strong>","gaps":["Cần nêu thời gian chiếu sáng."],"question":"Điều gì xảy ra sau sáu tháng?"}
+            route.fulfill(json={"candidates":[{"content":{"parts":[{"text":json.dumps(result)}]}}]})
+
+    context.route("https://generativelanguage.googleapis.com/**",provider)
+    root.get_by_role("button",name="Nhờ AI phản biện").click()
+    expect(root.get_by_role("button",name="Nhờ AI phản biện")).to_have_count(0)
+    if status==429:
+        expect(page.locator("#notice")).to_contain_text("429")
+        root.get_by_role("button",name="Tự đối chiếu và viết lại").click()
+    else:
+        expect(root).to_contain_text("<strong>Bạn đã nêu cơ chế.</strong>")
+        assert root.locator("strong").count()==0
+        page.reload()
+        expect(root).to_contain_text("Điều gì xảy ra sau sáu tháng?")
+        root.get_by_role("button",name="Viết lại lời giải thích").click()
+    if browser.browser_type.name=="webkit":
+        assert page.evaluate("() => sessionStorage.getItem('mock-ai-calls')")=="1"
+    else:
+        assert len(calls)==1
+    expect(root).to_contain_text("Bước 3/5")
+    page.locator("#deep-answer").fill(ANSWER+" Bản sửa có ví dụ.")
+    root.get_by_role("button",name="Sang bước vận dụng").click()
+    expect(root).to_contain_text("Bước 4/5")
+    page.locator("#deep-answer").fill(ANSWER+" Áp dụng cho trường hợp mới.")
+    assert page.evaluate("() => innerWidth === document.documentElement.scrollWidth")
+    page.locator("#deep-answer").press("Tab")
+    root.get_by_role("button",name="Sang bước tổng kết").click()
+    expect(root).to_contain_text("Bước 5/5")
+    for check in root.get_by_role("checkbox").all():
+        check.check()
+    root.locator("#deep-score").select_option("5")
+    expect(root.locator("[data-draft-status]")).to_have_text("Đã lưu trên thiết bị")
+    if status==200:
+        page.wait_for_function("() => Boolean(navigator.serviceWorker.controller)")
+        context.set_offline(True)
+    page.reload()
+    expect(root.locator("#deep-score")).to_have_value("5")
+    assert root.get_by_role("checkbox").count()==9
+    root.get_by_role("button",name="Lưu phiên và lịch ôn").evaluate("(button) => {button.click();button.click()}")
+    expect(root).to_contain_text("Đã lưu phiên học")
+    expect(root).to_contain_text("Vận dụng được")
+    assert state(page)["stats"]["totalReviews"]==1
+    if status==200:
+        context.set_offline(False)
+    root.get_by_role("button",name="Về Hôm nay").click()
+    nav(page,"progress")
+    expect(page.locator("#deep-history")).to_contain_text("Vận dụng được")
+    nav(page,"settings")
+    with page.expect_download() as download:
+        page.locator("#export-data").click()
+    raw=download.value.path().read_text(encoding="utf-8")
+    record=json.loads(raw)["deepSessions"][0]
+    assert record["initial"]==ANSWER and record["summary"]["independent"]==(status==200)
+    assert fixture not in raw
+    page.on("dialog",lambda dialog:dialog.accept())
+    page.locator("#import-file").set_input_files({"name":"backup.json","mimeType":"application/json","buffer":raw.encode()})
+    expect(page.locator("#notice")).to_contain_text("Đã khôi phục")
+    if status==200:
+        nav(page,"home")
+        context.set_offline(True)
+        page.locator(".pilot-card").nth(2).get_by_role("button").click()
+        expect(root).to_contain_text("GDP nói gì")
+        page.locator("#deep-answer").fill(ANSWER)
+        root.get_by_role("button",name="Sang bước phản biện").click()
+        root.get_by_role("button",name="Tự đối chiếu và viết lại").click()
+        page.locator("#deep-answer").fill(ANSWER+" GDP đo sản lượng trong một kỳ.")
+        root.get_by_role("button",name="Sang bước vận dụng").click()
+        expect(root).to_contain_text("thu nhập khả dụng trung vị")
+        assert len(calls)==1
+    assert not errors,errors
+    context.close()
+    print(f"PASS deep pilot {browser.browser_type.name} {width}px: five stages, resume, AI {status}, history and restore",flush=True)
 
 
 def main(url=None):
@@ -375,6 +535,9 @@ def main(url=None):
                     workflow(browser,url)
                     migration_and_formats(browser,url)
                     storage_denied(browser,url)
+                    deep_pilot(browser,url,320,200)
+                else:
+                    deep_pilot(browser,url,430,429)
                 browser.close()
     finally:
         if server is not None:

@@ -2,6 +2,8 @@
 
 Bản nâng cấp V3, quy tắc SM-2, migration IndexedDB, cấu hình Gemini và cách khôi phục nằm trong [tài liệu V3](V3.md).
 
+Pilot V3.1 có hướng dẫn thử trên điện thoại và tiêu chí đánh giá tại [Phiên học sâu](V3.1.md).
+
 PWA cá nhân dùng Active Recall và SM-2, viết bằng HTML, CSS và JavaScript. Trang **Hôm nay** ưu tiên bài đến hạn, gợi ý một bài khám phá và hiển thị bài sâu hoặc tổng hợp theo ngày. Trang **Chuyên đề** có bốn chương, 12 bài sâu theo thứ tự, 24 bài khám phá, bốn bài tổng hợp và một bài tổng kết. Có thể mở bất kỳ bài nào trong lộ trình. Mốc 28 ngày bắt đầu khi bạn mở bài được gợi ý, đổi câu hoặc lưu lựa chọn chỉ ôn lần đầu.
 
 Trong 36 khái niệm của kế hoạch có 5 bài trong nghề (13,9%). Thư viện có đủ 66 chủ đề gốc. Đề xuất mới từ AI xuất hiện trong khu vực bản nháp riêng để bạn đọc và kiểm tra. Tài liệu cho từng chủ đề chưa được kiểm chứng nguồn. Màn hình đối chiếu ghi rõ trạng thái này.

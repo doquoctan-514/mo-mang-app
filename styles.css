@@ -78,6 +78,30 @@ button, summary { min-height:44px; }
 }
 
 .study-format { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 0 14px; }
+.pilot-panel { margin-top:18px; }
+.pilot-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:13px; }
+.pilot-card { display:grid; gap:8px; align-content:start; background:#f4f8f2; border:1px solid #dde8dd; border-radius:11px; padding:14px; }
+.pilot-card h3,.deep-body h2,.deep-body h4,.pilot-history h3 { margin:0; }
+.pilot-history { margin-top:18px; }
+#deep-session { max-width:780px; margin:12px auto; }
+.deep-header h1 { font-size:clamp(23px,4vw,34px); }
+.deep-header progress { width:100%; accent-color:#2d6d53; }
+.deep-body { display:grid; gap:12px; margin:16px 0; }
+.deep-body p,.deep-body ul { margin:0; }
+.deep-body textarea { width:100%; min-height:112px; height:clamp(112px,25dvh,180px); font-size:16px; padding:10px; border:1px solid #9eb7a6; border-radius:9px; resize:vertical; }
+.deep-body select { min-height:44px; padding:8px; font-size:16px; }
+.deep-body summary,.deep-sources summary { min-height:44px; padding:9px 0; cursor:pointer; font-weight:700; }
+.deep-sources a { display:block; min-height:44px; padding:8px 0; text-decoration:underline; }
+.deep-checks { display:grid; min-width:0; gap:4px; border:1px solid #dde8dd; border-radius:9px; }
+.deep-checks label { display:flex; align-items:center; gap:8px; min-height:44px; cursor:pointer; }
+.deep-checks input { flex:none; width:18px; height:18px; }
+#deep-session > .btn { margin:6px 8px 0 0; }
+@media(max-width:700px) {
+  .pilot-grid { grid-template-columns:1fr; }
+  #deep-session > .btn { width:100%; margin-right:0; }
+  body:has(#page-deep:not(.hidden)) .bottom-nav { display:none; }
+  html:has(#page-deep:not(.hidden)) { scroll-behavior:auto; }
+}
 .study-format label, #history-panel label { font-weight:700; color:#315e4f; }
 .study-format select, #history-filter { min-height:44px; max-width:100%; border:1px solid #dce7dc; border-radius:10px; background:#fff; color:var(--ink); padding:7px 12px; font-size:16px; }
 #history-filter { display:block; width:min(100%,420px); margin:5px 0 13px; }

@@ -1,10 +1,11 @@
 const scope = new URL(self.registration.scope);
 const prefix = `mo-mang-shell:${scope.pathname}:`;
-const cacheName = prefix + '3.0.0';
+const cacheName = prefix + '3.1.0';
 const index = new URL('index.html',scope).href;
 const assets = new Set([
   'index.html','styles.css','src/app.js','src/ai.js','src/storage.js','src/scheduler.js',
   'src/topics.js','src/curriculum.js','src/database.js','src/exercises.js','content/curriculum-c-28-days.json',
+  'src/deep-study.js','src/deep-view.js',
   'manifest.webmanifest','assets/icon-192.png','assets/icon-512.png','assets/noto-sans-latin.woff2','assets/noto-sans-vi.woff2',
 ].map(path=>new URL(path,scope).href));
 

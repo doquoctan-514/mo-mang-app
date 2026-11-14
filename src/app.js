@@ -5,6 +5,8 @@ import {commitLearning,exportV3,importV3,legacyAttempts,normalizeAttempt,openLea
 import {MODE_LABELS,chooseMode,exercises,modesFor,questionFor} from './exercises.js';
 import {askAI,comparisonPrompt,generationPrompt,previousAnswers} from './ai.js';
 import {createCurriculum,nextDeepTopic,planForDate,alternateDiscovery,setDailySelection} from './curriculum.js';
+import {PILOT, STEPS, abilityFor} from './deep-study.js';
+import {createDeepView} from './deep-view.js';
 
 let track;
 
@@ -22,13 +24,18 @@ const $=id=>document.getElementById(id);
 const catOf=id=>CATEGORIES.find(c=>c.id===id)||CATEGORIES[4];
 const topicById=id=>id?(allTopics().find(t=>t.id===id) ?? track?.chapters.find(c=>c.assignment.id===id)?.assignment ?? (track?.final.id===id?track.final:null)):null;
 const allTopics=()=>[...TOPICS,...state.customTopics.filter(t=>t.status!=='draft')];
-let state={...newState(),attempts:[],studyMode:'auto'},readOnlyIssue=null,db;
+let state={...newState(),attempts:[],studyMode:'auto',deepSessions:{}},readOnlyIssue=null,db;
 let writes=Promise.resolve();
 let config={provider:'gemini',model:'gemini-3.5-flash-lite'},apiKey='',rememberKey=false;
 let currentPage='home',currentTopicId=null,filter='all',search='',assessment=null,chosenScore=null,activeAbort=null,busy=false,noticeTimeout=null,viewBeforeStudy='home';
 let homeDate, lessonMode='essay', quizChoice=null, finishing=false, studySession=0;
 const pendingDrafts=new Map();
 const PAGES=['home','explore','track','progress','settings'];
+const deepView=createDeepView({
+  root:$('deep-session'),getState:()=>state,commit:safeCommit,notify,
+  getAI:()=>({...config,key:apiKey}),goHome:()=>setPage('home'),
+  openPractice:id=>startStudy(topicById(id),'home',null,true),
+});
 
 function safeRead(store,key){try{return store.getItem(key)}catch{return null}}
 function loadConfig(){
@@ -53,25 +60,27 @@ function put(parent,...children){for(const item of children)if(item)parent.appen
 function cssCategory(el,cat){el.style.setProperty('--cat-color',cat.color);el.style.setProperty('--cat-bg',cat.bg);return el}
 function updateChrome(){
   $('header-streak').textContent=currentStreak(state.stats.completedDates);
-  const active=currentPage==='study'?viewBeforeStudy:currentPage;
+  const active=['study','deep'].includes(currentPage)?viewBeforeStudy:currentPage;
   document.querySelectorAll('[data-nav]').forEach(b=>{
     b.classList.toggle('is-active',b.dataset.nav===active);
     if(b.dataset.nav===active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');
   });
 }
 function setPage(page){
-  if(![...PAGES,'study'].includes(page))page='home';
+  if(![...PAGES,'study','deep'].includes(page))page='home';
+  if(currentPage==='deep'&&page!=='deep')deepView.close();
   flushDrafts();
   if(currentPage==='study'&&page!=='study'&&activeAbort){activeAbort.abort();activeAbort=null;busy=false;}
   currentPage=page;
   document.querySelectorAll('.page').forEach(p=>p.classList.toggle('hidden',p.id!==`page-${page}`));
   if(page==='home')renderHome();if(page==='explore')renderExplore();if(page==='track')renderTrack();if(page==='progress')renderProgress();if(page==='settings')renderSettings();
   updateChrome();
-  if(page!=='study')history.replaceState(null,'',`#${page}`);
+  if(!['study','deep'].includes(page))history.replaceState(null,'',`#${page}`);
   window.scrollTo({top:0,behavior:'instant'});
 }
-function startStudy(topic,origin=currentPage,lane=null){
+function startStudy(topic,origin=currentPage,lane=null,practice=false){
   if(!topic)return;
+  if(!practice&&Object.hasOwn(PILOT,topic.id)){openDeep(topic.id,origin);return;}
   flushDrafts();
   if(activeAbort){activeAbort.abort();activeAbort=null}busy=false;
   viewBeforeStudy=origin==='study'?viewBeforeStudy:origin;
@@ -94,6 +103,13 @@ function startStudy(topic,origin=currentPage,lane=null){
   $('answer-pane').classList.remove('hidden');$('assessment-pane').classList.add('hidden');$('completion-pane').classList.add('hidden');
   $('ai-grade').disabled=false;$('self-grade').disabled=false;$('ai-grade').textContent='✦ Nhờ AI phản biện';
   setPage('study');
+}
+function openDeep(id,origin='home',sessionId){
+  if(currentPage==='deep')deepView.close();
+  viewBeforeStudy=origin;
+  setPage('deep');
+  const opened=deepView.open(id,sessionId);
+  history.replaceState(null,'',`#deep/${id}/${opened}`);
 }
 function draftId(topicId,mode=lessonMode){return mode==='essay'?topicId:`${mode}-${topicId}`;}
 function setLessonMode(mode){
@@ -178,6 +194,14 @@ function renderHome(){
     else if(!deferred && next && !state.learningPlan.synthesis[next.id])startPlanned(next,next.synthesis?'synthesis':'deep');
     else setPage('track');
   };
+  const pilot=$('pilot-links');
+  pilot.replaceChildren(...Object.entries(PILOT).map(([id,lesson])=>{
+    const unfinished=Object.values(deepView.sessions()).find(s=>s.topicId===id&&!s.summary);
+    const card=make('div','pilot-card');
+    card.append(make('h3','',lesson.title),make('p','lane-note',unfinished?`Đang học · ${STEPS[unfinished.stage]}`:
+      abilityFor(state.deepSessions??{},id)??'Khoảng 10–15 phút'),action(unfinished?'Tiếp tục học sâu':'Mở phiên học sâu',()=>openDeep(id),'primary'));
+    return card;
+  }));
 }
 function action(label, callback, style='outline'){
   const button=make('button',`btn btn-${style}`,label);
@@ -268,14 +292,35 @@ function renderProgress(){
   $('stat-streak').replaceChildren(document.createTextNode(String(currentStreak(state.stats.completedDates))+' '),make('small','','ngày'));
   $('stat-learned').textContent=Object.keys(state.progress).length;
   $('stat-reviews').textContent=state.stats.totalReviews;
+  const deepReviews=Object.values(state.deepSessions??{}).map(session=>session.summary).filter(summary=>summary?.timing==='due');
   const dueReviews=state.attempts.filter(attempt=>attempt.timing==='due');
   const lanes=$('progress-lanes');
   lanes.replaceChildren(
     make('p','',`Khám phá theo lộ trình: ${track?.discovery.filter(id=>state.progress[id]).length??0}/24 bài`),
     make('p','',`Chuyên đề: ${track?.deep.filter(id=>state.progress[id]).length??0}/12 bài · ${Object.keys(state.learningPlan.synthesis).length}/5 bài tổng hợp`),
-    make('p','',`Ôn đến hạn: ${dueReviews.length} lượt · ${dueReviews.filter(review=>review.mode!=='quiz'&&review.finalScore>=3).length} lượt nhớ ý chính`)
+    make('p','',`Ôn đến hạn: ${dueReviews.length+deepReviews.length} lượt · ${dueReviews.filter(review=>review.mode!=='quiz'&&review.finalScore>=3).length+deepReviews.filter(review=>review.independent&&review.score>=3).length} lượt nhớ ý chính`)
   );
   renderHistory();
+  const deep=$('deep-history');
+  deep.replaceChildren(...Object.entries(PILOT).map(([id,lesson])=>{
+    const group=make('div','pilot-history');
+    const status=abilityFor(deepView.sessions(),id);
+    group.append(make('h3','',lesson.title),make('p','lane-meta',status??'Chưa bắt đầu'));
+    const entries=Object.values(state.deepSessions??{}).filter(s=>s.topicId===id&&s.summary).reverse();
+    for(const s of entries){
+      const item=make('details','history-entry');
+      item.append(make('summary','',`${s.summary.date} · ${s.summary.score}/5 · Ôn ${s.summary.nextReview}`));
+      for(const [label,key] of [['Bản đầu','initial'],['Bản tự sửa','revised'],['Vận dụng','application']]){
+        item.append(make('h4','',label),make('p','history-answer',s[key]));
+      }
+      item.append(make('h4','','Phản biện'),make('p','',s.feedback.strength),make('p','',s.feedback.question),
+        put(make('ul'),...s.feedback.gaps.map(text=>make('li','',text))),
+        make('h4','','Tình huống'),make('p','',s.scenario),
+        make('h4','','Tổng kết'),make('p','',s.summary.strength),make('p','',s.summary.gap),make('p','',s.summary.nextStep));
+      group.append(item);
+    }
+    return group;
+  }));
   const list=$('due-list');list.replaceChildren();const queued=due();$('due-label').textContent=queued.length?`${queued.length} câu đến hạn`:'Đã hoàn thành hôm nay';
   const future=allTopics().filter(t=>state.progress[t.id]?.nextReview>localDate())
     .sort((a,b)=>state.progress[a.id].nextReview.localeCompare(state.progress[b.id].nextReview)).slice(0,12);
@@ -512,9 +557,9 @@ function saveConfiguration(){
 }
 function downloadFile(filename,data){const blob=new Blob([data],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}
 function backupText(){
-  const snapshot=exportV3({...state,drafts:draftSnapshot()});
+  const snapshot=exportV3({...state,drafts:draftSnapshot(),deepSessions:deepView.sessions()});
   const secrets=[apiKey,safeRead(localStorage,KEY_STORAGE),safeRead(sessionStorage,KEY_STORAGE)].filter(Boolean);
-  const textFields=new Set(['title','question','reference','answer','feedback','followUpQuestion']);
+  const textFields=new Set(['title','question','reference','answer','feedback','followUpQuestion','initial','revised','application','strength','gap','nextStep','scenario']);
   return JSON.stringify(snapshot,function(field,value){
     if(typeof value==='string'&&(textFields.has(field)||this===snapshot.data.drafts||Array.isArray(this))){
       for(const secret of new Set(secrets))value=value.replaceAll(secret,'[API key đã ẩn]');
@@ -529,20 +574,22 @@ async function importData(file){if(!file)return;try{
   try{parsed=importV3(await file.text())}catch{throw new Error('File backup không đọc được hoặc không đúng cấu trúc.')}
   if(!confirm('Nhập bản backup sẽ thay thế tiến trình hiện tại trên trình duyệt này. Bạn có muốn tiếp tục?'))return;
   await flushDrafts();
+  await deepView.flush();
   if(state.revision||state.attempts.length||Object.keys(draftSnapshot()).length)downloadFile(`mo-mang-truoc-khi-nhap-${localDate()}.json`,backupText());
   if(!db){
     const recovered=await openLearningStore({recovery:parsed});
     db=recovered.db;state=recovered.state;
   }else if(!await safeCommit(()=>parsed,{replace:true}))return;
-  pendingDrafts.clear();readOnlyIssue=null;notify('Đã khôi phục dữ liệu thành công.');renderSettings();
+  pendingDrafts.clear();deepView.clear();readOnlyIssue=null;notify('Đã khôi phục dữ liệu thành công.');renderSettings();
 }catch(e){notify(`Không nhập được backup: ${e.message}`,true)}finally{$('import-file').value=''}}
 async function resetProgress(){
   if(!confirm('Xóa TOÀN BỘ lịch học của MỞ MANG trên trình duyệt này? Bạn đã tải backup chưa?'))return;
   if(!confirm('Xác nhận lần nữa: thao tác này không thể hoàn tác.'))return;
   try{
     await flushDrafts();
-    if(!await safeCommit(()=>({...newState(),attempts:[],studyMode:'auto'}),{replace:true}))return;
-    pendingDrafts.clear();readOnlyIssue=null;notify('Đã tạo lại tiến trình trắng.');setPage('home');
+    await deepView.flush();
+    if(!await safeCommit(()=>({...newState(),attempts:[],studyMode:'auto',deepSessions:{}}),{replace:true}))return;
+    pendingDrafts.clear();deepView.clear();readOnlyIssue=null;notify('Đã tạo lại tiến trình trắng.');setPage('home');
   }catch{notify('Không thể xóa tiến trình. Hãy tải lại trang và kiểm tra quyền lưu trữ.',true)}
 }
 function keepAnswerVisible(){
@@ -611,12 +658,18 @@ function bindEvents(){
   $('export-data').addEventListener('click',exportData);
   $('import-file').addEventListener('change',e=>importData(e.target.files?.[0]));
   $('reset-progress').addEventListener('click',resetProgress);
-  window.addEventListener('hashchange',()=>{const page=location.hash.slice(1);if(PAGES.includes(page)&&page!==currentPage)setPage(page)});
-  window.addEventListener('pagehide',flushDrafts);
+  window.addEventListener('hashchange',routeFromHash);
+  window.addEventListener('pagehide',()=>{flushDrafts();deepView.flush();});
   document.addEventListener('visibilitychange',()=>{
-    if(document.hidden)flushDrafts();
+    if(document.hidden){flushDrafts();deepView.flush();}
     else if(currentPage==='home'&&homeDate!==localDate())renderHome();
   });
+}
+function routeFromHash(){
+  const page=location.hash.slice(1);
+  const [kind,id,sessionId]=page.split('/');
+  if(kind==='deep'&&id&&Object.hasOwn(PILOT,id))openDeep(id,'home',sessionId);
+  else setPage(PAGES.includes(page)?page:'home');
 }
 try{
   const stored=await openLearningStore();
@@ -626,7 +679,7 @@ try{
   state={...legacy.state,attempts:legacyAttempts(legacy.state),studyMode:'auto'};
   readOnlyIssue={message:'Không mở hoặc chuyển được bộ nhớ IndexedDB. Dữ liệu gốc vẫn còn; app đang ở chế độ chỉ đọc.'};
 }
-renderSidebar();bindEvents();setPage(location.hash.slice(1));
+renderSidebar();bindEvents();routeFromHash();
 if(readOnlyIssue)notify(readOnlyIssue.message,true);
 fetch(new URL('../content/curriculum-c-28-days.json',import.meta.url))
   .then(response=>{if(!response.ok)throw new Error('Không tải được lộ trình.');return response.json()})
