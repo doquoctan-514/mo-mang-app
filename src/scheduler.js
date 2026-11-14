@@ -44,6 +44,21 @@ export function dueTopics(topics,progress,today=localDate()) {
   return topics.filter(t=>progress[t.id] && validDate(progress[t.id].nextReview) && progress[t.id].nextReview<=today)
     .sort((a,b)=>progress[a.id].nextReview.localeCompare(progress[b.id].nextReview));
 }
+export function scheduleAttempt(previous, {score, type, today=localDate(), feedback=''}) {
+  if(!Number.isInteger(score)||score<1||score>5)throw new Error('Điểm phải từ 1 đến 5.');
+  if(!validDate(today))throw new Error('Ngày học không hợp lệ');
+  const timing=!previous?'new':previous.nextReview<=today?'due':'early';
+  // A correct recognition answer does not establish unaided recall.
+  if(type==='quiz'&&score>=3)return {progress:previous, timing};
+  const lastDate=previous?.lastReviewed ?? previous?.history?.at(-1)?.date;
+  const seenToday=lastDate===today;
+  if(previous&&(seenToday||timing==='early')){
+    const tomorrow=addDays(today,1);
+    if(score>=3 || previous.nextReview<=tomorrow)return {progress:previous,timing};
+    return {progress:reviewProgress(previous,score,today,feedback),timing};
+  }
+  return {progress:reviewProgress(previous,score,today,feedback),timing};
+}
 export function currentStreak(completedDates,today=localDate()) {
   const days=new Set((Array.isArray(completedDates)?completedDates:[]).filter(validDate));
   let current=today;
