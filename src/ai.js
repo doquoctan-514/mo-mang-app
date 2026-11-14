@@ -12,6 +12,12 @@ const comparisonSchema={
 };
 function validateResponse(obj,kind){
   if(!obj||typeof obj!=='object'||Array.isArray(obj))throw new Error('AI trả về dữ liệu không đúng cấu trúc. Bạn có thể thử lại hoặc tự đánh giá.');
+  if(kind==='reflect'){
+    const valid=text=>typeof text==='string'&&text.trim()&&text.length<=600;
+    if(!valid(obj.strength)||!valid(obj.question)||!Array.isArray(obj.gaps)||obj.gaps.length>2||!obj.gaps.every(valid))
+      throw new Error('Phản biện AI sai cấu trúc.');
+    return {strength:obj.strength,question:obj.question,gaps:obj.gaps};
+  }
   if(kind==='grade'||kind==='compare'){
     const score=obj.score;
     if(!Number.isInteger(score)||score<1||score>5||typeof obj.feedback!=='string'||!obj.feedback.trim())throw new Error('AI trả về điểm hoặc phản hồi không hợp lệ. Hãy thử lại hoặc tự chấm.');

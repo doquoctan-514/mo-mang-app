@@ -1,5 +1,6 @@
 import {DRAFT_PREFIX, STATE_KEY, newState, readState, validateState, safeId} from './storage.js';
 import {validDate} from './scheduler.js';
+import {normalizeDeepSession} from './deep-study.js';
 
 export const DB_NAME='mo-mang-v3';
 const STORES=['topics','attempts','progress','drafts','learningPlans','settings'];
@@ -48,21 +49,26 @@ export function normalizeAttempt(item){
 }
 
 export function exportV3(state){
+  const deepSessions=Object.values(state.deepSessions??{}).map(normalizeDeepSession);
   return {
-    format:'MO-MANG-BACKUP',schemaVersion:3,exportedAt:new Date().toISOString(),
+    format:'MO-MANG-BACKUP',schemaVersion:deepSessions.length?4:3,exportedAt:new Date().toISOString(),
     data:validateState(state),attempts:state.attempts.map(normalizeAttempt),
     studyMode:state.studyMode,
+    ...(deepSessions.length?{deepSessions}:{}),
   };
 }
 export function importV3(raw){
   const data=JSON.parse(raw);
-  if(data?.format!=='MO-MANG-BACKUP'||![undefined,1,2,3].includes(data.schemaVersion))throw new Error('Định dạng backup không được hỗ trợ.');
+  if(data?.format!=='MO-MANG-BACKUP'||![undefined,1,2,3,4].includes(data.schemaVersion))throw new Error('Định dạng backup không được hỗ trợ.');
   const state=validateState(data.data);
-  if(data.schemaVersion!==3)return {...state,attempts:legacyAttempts(state),studyMode:'auto'};
+  if(![3,4].includes(data.schemaVersion))return {...state,attempts:legacyAttempts(state),studyMode:'auto',deepSessions:{}};
   if(!Array.isArray(data.attempts))throw new Error('Backup thiếu danh sách lượt học.');
   const attempts=data.attempts.map(normalizeAttempt);
   if(new Set(attempts.map(a=>a.id)).size!==attempts.length)throw new Error('Backup có lượt học trùng ID.');
-  return {...state,attempts,studyMode:studyMode(data.studyMode)};
+  if(data.schemaVersion===4&&!Array.isArray(data.deepSessions))throw new Error('Backup thiếu phiên học sâu.');
+  const sessions=(data.schemaVersion===4?data.deepSessions:[]).map(normalizeDeepSession);
+  if(new Set(sessions.map(s=>s.id)).size!==sessions.length)throw new Error('Backup có phiên học sâu trùng ID.');
+  return {...state,attempts,studyMode:studyMode(data.studyMode),deepSessions:Object.fromEntries(sessions.map(s=>[s.id,s]))};
 }
 
 function studyMode(value){return ['auto','essay','quiz','scenario'].includes(value)?value:'auto';}
@@ -100,7 +106,11 @@ function writeState(tx,next,previous,replace=false){
   const attempts=tx.objectStore('attempts');
   if(replace)attempts.clear();
   for(const attempt of next.attempts.slice(replace?0:previous.attempts.length))attempts.add(attempt,attempt.id);
-  tx.objectStore('learningPlans').put(next.learningPlan,'active');
+  const plans=tx.objectStore('learningPlans');
+  plans.put(next.learningPlan,'active');
+  const previousSessions=previous.deepSessions??{}, nextSessions=next.deepSessions??{};
+  for(const id of Object.keys(previousSessions))if(!Object.hasOwn(nextSessions,id))plans.delete('deep:'+id);
+  for(const [id,session] of Object.entries(nextSessions))if(previousSessions[id]!==session)plans.put(session,'deep:'+id);
   tx.objectStore('settings').put({
     revision:next.revision,stats:next.stats,learningPreferences:next.learningPreferences,
     studyMode:studyMode(next.studyMode),installed:true,
@@ -115,16 +125,20 @@ async function loadDatabase(db){
     const [keys,values]=await Promise.all([request(store.getAllKeys()),request(store.getAll())]);
     return Object.fromEntries(keys.map((key,index)=>[key,values[index]]));
   };
-  const [metadata,learningPlan,customTopics,progress,drafts,attempts]=await Promise.all([
-    request(tx.objectStore('settings').get('app')),request(tx.objectStore('learningPlans').get('active')),
+  const [metadata,plans,customTopics,progress,drafts,attempts]=await Promise.all([
+    request(tx.objectStore('settings').get('app')),readMap('learningPlans'),
     request(tx.objectStore('topics').getAll()),readMap('progress'),readMap('drafts'),
     request(tx.objectStore('attempts').getAll()),
   ]);
   await complete;
   if(!metadata?.installed)return null;
   return {
-    ...validateState({...newState(),...metadata,learningPlan,customTopics,progress,drafts,legacyDraftsMigrated:true}),
+    ...validateState({...newState(),...metadata,learningPlan:plans.active,customTopics,progress,drafts,legacyDraftsMigrated:true}),
     attempts:attempts.map(normalizeAttempt),studyMode:studyMode(metadata.studyMode),
+    deepSessions:Object.fromEntries(Object.entries(plans).filter(([key])=>key.startsWith('deep:')).map(([,value])=>{
+      const session=normalizeDeepSession(value);
+      return [session.id,session];
+    })),
   };
 }
 
