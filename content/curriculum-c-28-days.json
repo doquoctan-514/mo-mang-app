@@ -1,0 +1,162 @@
+{
+  "id": "world-foundations-28d",
+  "version": 1,
+  "title": "28 ngày: Hiểu cách thế giới vận hành",
+  "subtitle": "Một câu hỏi khám phá mỗi ngày, một chuyên đề đào sâu theo chuỗi liên kết",
+  "status": "active",
+  "newConceptPolicy": {
+    "professionTargetShare": 0.15,
+    "professionPlannedInFirst28Days": 5,
+    "totalPlannedNewConcepts": 36,
+    "actualShare": 0.1389,
+    "reviewSessionsExcludedFromRatio": true
+  },
+  "weeklySlots": {
+    "discoveryDays": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "deepDays": [
+      1,
+      3,
+      5
+    ],
+    "synthesisDay": 7,
+    "allowVoluntaryDeepAnyDay": true
+  },
+  "lessonOrderOfWeek": [
+    "discovery+deep",
+    "discovery",
+    "discovery+deep",
+    "discovery",
+    "discovery+deep",
+    "discovery",
+    "review+synthesis"
+  ],
+  "weeks": [
+    {
+      "week": 1,
+      "title": "Từ tự nhiên đến những cộng đồng đầu tiên",
+      "theme": "Địa lý và lịch sử hình thành xã hội",
+      "discoveryTopicIds": [
+        "geo_seasons",
+        "sci_vaccine",
+        "cul_food",
+        "eco_fx",
+        "soc_misinformation",
+        "pro_sellin"
+      ],
+      "deepTopicIds": [
+        "geo_delta",
+        "his_agriculture",
+        "his_silkroad"
+      ],
+      "synthesis": {
+        "title": "Vì sao nhiều nền văn minh xuất hiện ở những nơi có điều kiện tự nhiên thuận lợi?",
+        "question": "Hãy nối ít nhất ba mắt xích: môi trường tự nhiên → nông nghiệp ổn định → trao đổi hàng hóa và văn hóa. Nêu một điều kiện KHÔNG đủ để giải thích sự hình thành một nền văn minh.",
+        "criteria": [
+          "Liên kết điều kiện tự nhiên với sản xuất",
+          "Phân biệt tương quan với nguyên nhân",
+          "Đưa ra ít nhất một ví dụ hoặc phản ví dụ"
+        ]
+      }
+    },
+    {
+      "week": 2,
+      "title": "Ai đặt ra luật lệ và quản lý quyền lực?",
+      "theme": "Nhà nước, chính phủ, hiến pháp và quyền lực",
+      "discoveryTopicIds": [
+        "geo_maps",
+        "cul_heritage",
+        "sci_greenhouse",
+        "pro_posm",
+        "soc_population",
+        "eco_debt"
+      ],
+      "deepTopicIds": [
+        "civ_state",
+        "civ_constitution",
+        "civ_powers"
+      ],
+      "synthesis": {
+        "title": "Một quốc gia cần những cơ chế nào để điều hành xã hội?",
+        "question": "Giả sử bạn đang giải thích cho một người chưa biết: nhà nước, chính phủ và hiến pháp khác nhau ở điểm nào? Hãy mô tả cách các nhánh quyền lực phối hợp và kiểm soát nhau trong những hệ thống có cơ chế phân quyền.",
+        "criteria": [
+          "Phân biệt nhà nước và chính phủ",
+          "Giải thích vai trò của hiến pháp",
+          "Lưu ý cơ cấu quyền lực khác nhau giữa các quốc gia"
+        ]
+      }
+    },
+    {
+      "week": 3,
+      "title": "Thế giới hiện đại đến từ đâu?",
+      "theme": "Công nghiệp, thuộc địa và cạnh tranh quốc tế",
+      "discoveryTopicIds": [
+        "sci_causality",
+        "geo_monsoon",
+        "pro_rfm",
+        "cul_language",
+        "eco_gdp",
+        "pro_bi"
+      ],
+      "deepTopicIds": [
+        "his_industry",
+        "his_colonial",
+        "his_coldwar"
+      ],
+      "synthesis": {
+        "title": "Lịch sử để lại hệ quả gì cho thế giới hôm nay?",
+        "question": "Chọn một quốc gia hoặc khu vực, nêu cách công nghiệp hóa, lịch sử thuộc địa hoặc Chiến tranh Lạnh có thể liên quan đến thể chế và phát triển hiện nay. Tách rõ phần sự kiện có thể kiểm chứng và phần giải thích/giả thuyết.",
+        "criteria": [
+          "Sử dụng ít nhất hai giai đoạn lịch sử",
+          "Tránh khẳng định quan hệ nhân quả khi chưa có bằng chứng",
+          "Nêu một cách giải thích khác hoặc giới hạn của lập luận"
+        ]
+      }
+    },
+    {
+      "week": 4,
+      "title": "Vì sao xã hội không ngừng biến đổi?",
+      "theme": "Đô thị hóa, di cư và chính sách công",
+      "discoveryTopicIds": [
+        "cul_tet",
+        "sci_genes",
+        "geo_currents",
+        "his_sources",
+        "pro_forecast",
+        "eco_trade"
+      ],
+      "deepTopicIds": [
+        "soc_urban",
+        "soc_migration",
+        "civ_policy"
+      ],
+      "synthesis": {
+        "title": "Giải một vấn đề xã hội bằng tư duy hệ thống",
+        "question": "Giả sử một thành phố thu hút rất nhiều người nhập cư. Hãy phân tích lợi ích, sức ép lên nhà ở/hạ tầng và đề xuất một chính sách khả thi. Đề ra ít nhất một chỉ số đánh giá hiệu quả và một rủi ro cần theo dõi.",
+        "criteria": [
+          "Xác định đúng vấn đề và các bên liên quan",
+          "Nêu lợi ích và đánh đổi",
+          "Đề xuất chỉ số đo lường không bị đánh tráo bởi tăng trưởng dân số"
+        ]
+      }
+    }
+  ],
+  "systemRules": {
+    "dueAlwaysAvailable": true,
+    "dueDoesNotAdvanceTrack": true,
+    "sameTopicCanAppearInMultipleContextsWithoutDuplicateProgress": true,
+    "newTopicOnlyAfterFullAssessment": true,
+    "reviewIntervalsSetBySchedulerNotAI": true,
+    "skipDoesNotAlterSM2": true,
+    "sourceRequiredBeforeNewContentPublished": true,
+    "openToDifferentPerspectivesOnContestedTopics": true,
+    "offlineSelfAssessment": true,
+    "localOnly": true
+  }
+}

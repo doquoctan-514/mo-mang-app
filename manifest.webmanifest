@@ -1,0 +1,15 @@
+{
+  "name": "MỞ MANG — Học để hiểu thế giới",
+  "short_name": "MỞ MANG",
+  "description": "Tự giải thích, nhận phản biện và ôn tập đúng lúc.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f7f2",
+  "theme_color": "#f8f7f2",
+  "icons": [
+    {"src":"./assets/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./assets/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}

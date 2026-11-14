@@ -1,0 +1,860 @@
+[
+  {
+    "id": "geo_seasons",
+    "category": "geo",
+    "title": "Vì sao hai bán cầu có mùa trái ngược?",
+    "question": "Hãy giải thích tại sao tháng 7 ở Việt Nam thường nóng, nhưng nhiều nơi tại Úc đang là mùa đông.",
+    "reference": "Trái Đất nghiêng khoảng 23,4° so với mặt phẳng quỹ đạo. Khi bán cầu Bắc nghiêng về phía Mặt Trời, nơi đó nhận ánh sáng trực tiếp hơn và ngày dài hơn; cùng lúc bán cầu Nam nhận ít năng lượng hơn. Mùa không chủ yếu do Trái Đất gần hay xa Mặt Trời.",
+    "checkpoints": [
+      "Trục nghiêng của Trái Đất",
+      "Góc chiếu và thời gian chiếu sáng",
+      "Hai bán cầu nhận năng lượng khác nhau"
+    ],
+    "level": 1
+  },
+  {
+    "id": "geo_weather",
+    "category": "geo",
+    "title": "Thời tiết khác khí hậu ở đâu?",
+    "question": "Nếu một tuần trời lạnh bất thường, có thể kết luận Trái Đất đang lạnh đi không? Vì sao?",
+    "reference": "Thời tiết là trạng thái khí quyển trong thời gian ngắn tại một nơi; khí hậu là thống kê dài hạn của các điều kiện thời tiết, thường xét trên nhiều thập kỷ. Một đợt lạnh cục bộ không đủ để bác bỏ xu hướng ấm lên toàn cầu.",
+    "checkpoints": [
+      "Thang thời gian khác nhau",
+      "Khác biệt giữa biến động ngắn hạn và xu hướng",
+      "Cần nhiều dữ liệu theo thời gian"
+    ],
+    "level": 1
+  },
+  {
+    "id": "geo_earthquake",
+    "category": "geo",
+    "title": "Động đất xuất hiện từ đâu?",
+    "question": "Vì sao Nhật Bản xảy ra nhiều động đất hơn phần lớn các vùng nằm sâu trong lục địa?",
+    "reference": "Lớp vỏ ngoài Trái Đất gồm các mảng kiến tạo chuyển động chậm. Ở ranh giới mảng, ứng suất tích tụ rồi giải phóng đột ngột thành sóng địa chấn. Nhật Bản nằm gần nhiều ranh giới mảng nên có tần suất động đất cao.",
+    "checkpoints": [
+      "Mảng kiến tạo",
+      "Ranh giới mảng và tích tụ ứng suất",
+      "Giải phóng năng lượng thành sóng địa chấn"
+    ],
+    "level": 2
+  },
+  {
+    "id": "geo_delta",
+    "category": "geo",
+    "title": "Vì sao nhiều nền văn minh sinh ra bên sông?",
+    "question": "Tại sao các đồng bằng ven sông như sông Nile hay sông Hồng thường thu hút cư dân và nông nghiệp?",
+    "reference": "Sông cung cấp nước, đất phù sa, nguồn thực phẩm và đường vận tải. Những lợi thế này giúp tăng năng suất nông nghiệp, tập trung dân cư và trao đổi hàng hóa; tuy nhiên cư dân phải quản lý lũ lụt và xung đột nguồn nước.",
+    "checkpoints": [
+      "Nguồn nước và phù sa",
+      "Giao thương vận tải",
+      "Lợi ích đi kèm rủi ro lũ"
+    ],
+    "level": 1
+  },
+  {
+    "id": "geo_timezone",
+    "category": "geo",
+    "title": "Tại sao thế giới cần múi giờ?",
+    "question": "Vì sao lúc Hà Nội đang buổi sáng, New York có thể vẫn là buổi tối hôm trước?",
+    "reference": "Trái Đất tự quay một vòng khoảng 24 giờ, khiến các kinh độ đón ánh sáng Mặt Trời vào thời điểm khác nhau. Múi giờ là quy ước xã hội dựa gần đúng trên kinh độ và còn chịu điều chỉnh bởi biên giới, chính sách và giờ mùa hè ở một số nơi.",
+    "checkpoints": [
+      "Trái Đất tự quay",
+      "Kinh độ và thời điểm nhận ánh sáng",
+      "Múi giờ là quy ước có ngoại lệ"
+    ],
+    "level": 1
+  },
+  {
+    "id": "geo_currents",
+    "category": "geo",
+    "title": "Dòng hải lưu ảnh hưởng khí hậu thế nào?",
+    "question": "Vì sao hai nơi cùng vĩ độ có thể có nhiệt độ và lượng mưa rất khác nhau?",
+    "reference": "Hải lưu vận chuyển nhiệt giữa các vùng biển. Dòng biển ấm thường làm không khí ven bờ ấm và ẩm hơn; dòng lạnh có thể làm vùng duyên hải mát và khô hơn. Địa hình và gió cũng góp phần đáng kể.",
+    "checkpoints": [
+      "Hải lưu vận chuyển nhiệt",
+      "Dòng biển ấm và lạnh",
+      "Tương tác với gió và địa hình"
+    ],
+    "level": 2
+  },
+  {
+    "id": "geo_monsoon",
+    "category": "geo",
+    "title": "Gió mùa hình thành như thế nào?",
+    "question": "Vì sao nhiều nơi ở Đông Nam Á có mùa mưa và mùa khô khá rõ?",
+    "reference": "Sự chênh lệch nhiệt và áp suất giữa lục địa và đại dương thay đổi theo mùa, làm hệ thống gió dịch chuyển. Gió mang hơi ẩm từ biển vào đất liền có thể gây mưa lớn; địa hình và dải hội tụ nhiệt đới làm bức tranh phức tạp hơn.",
+    "checkpoints": [
+      "Chênh lệch nhiệt và áp suất theo mùa",
+      "Đổi hướng gió",
+      "Nguồn ẩm và địa hình"
+    ],
+    "level": 2
+  },
+  {
+    "id": "geo_maps",
+    "category": "geo",
+    "title": "Bản đồ có thể làm ta hiểu sai thế giới?",
+    "question": "Vì sao Greenland trông rất lớn trên một số bản đồ thế giới dù diện tích nhỏ hơn châu Phi nhiều lần?",
+    "reference": "Khi chiếu mặt cầu lên mặt phẳng, không thể giữ đồng thời mọi đặc tính diện tích, hình dạng và khoảng cách. Phép chiếu Mercator phóng đại mạnh diện tích vùng vĩ độ cao. Mỗi bản đồ phù hợp mục đích khác nhau.",
+    "checkpoints": [
+      "Trái Đất là bề mặt cong",
+      "Mọi phép chiếu đều có biến dạng",
+      "Mercator phóng đại gần cực"
+    ],
+    "level": 1
+  },
+  {
+    "id": "his_agriculture",
+    "category": "history",
+    "title": "Cách mạng nông nghiệp đã đổi xã hội ra sao?",
+    "question": "Điều gì thay đổi khi con người chuyển dần từ săn bắt–hái lượm sang trồng trọt và chăn nuôi?",
+    "reference": "Nông nghiệp tăng nguồn lương thực tương đối ổn định, giúp một số cộng đồng định cư và phân công lao động sâu hơn. Song nó cũng đi kèm phân tầng xã hội, dịch bệnh và phụ thuộc vào mùa vụ; quá trình diễn ra khác nhau ở từng khu vực.",
+    "checkpoints": [
+      "Định cư và nguồn lương thực",
+      "Phân công lao động",
+      "Cả mặt lợi lẫn chi phí"
+    ],
+    "level": 1
+  },
+  {
+    "id": "his_silkroad",
+    "category": "history",
+    "title": "Con đường Tơ lụa trao đổi điều gì ngoài hàng hóa?",
+    "question": "Nếu nói Con đường Tơ lụa chỉ là tuyến bán vải từ Trung Quốc sang châu Âu, điều gì còn thiếu?",
+    "reference": "Đây là mạng lưới các tuyến đường bộ và biển nối nhiều khu vực Á–Âu qua nhiều thế kỷ. Ngoài tơ lụa, người ta trao đổi kỹ thuật, tôn giáo, nghệ thuật, tri thức và cả mầm bệnh. Không có một con đường duy nhất hay một chiều.",
+    "checkpoints": [
+      "Mạng lưới nhiều tuyến",
+      "Lan truyền văn hóa tri thức",
+      "Tác động cả tích cực và tiêu cực"
+    ],
+    "level": 2
+  },
+  {
+    "id": "his_industry",
+    "category": "history",
+    "title": "Cách mạng công nghiệp thay đổi cuộc sống thế nào?",
+    "question": "Vì sao sự xuất hiện của nhà máy và máy hơi nước lại làm biến đổi cả đô thị và quan hệ lao động?",
+    "reference": "Cơ giới hóa và năng lượng hóa thạch tăng năng suất sản xuất, thúc đẩy nhà máy và đô thị hóa. Cùng lúc xuất hiện tầng lớp công nhân công nghiệp, thay đổi giờ làm, điều kiện lao động và tác động môi trường.",
+    "checkpoints": [
+      "Cơ giới hóa tăng năng suất",
+      "Đô thị hóa và lao động làm công",
+      "Chi phí xã hội và môi trường"
+    ],
+    "level": 1
+  },
+  {
+    "id": "his_french",
+    "category": "history",
+    "title": "Cách mạng Pháp 1789 để lại dấu ấn gì?",
+    "question": "Điều gì khiến Cách mạng Pháp không chỉ là sự kiện thay đổi người cầm quyền?",
+    "reference": "Cách mạng Pháp thách thức chế độ quân chủ và đặc quyền đẳng cấp, lan tỏa tư tưởng về công dân, bình đẳng trước pháp luật và chủ quyền quốc gia. Diễn biến chứa cả bạo lực và đấu tranh quyền lực, nên kết quả không diễn ra tuyến tính.",
+    "checkpoints": [
+      "Khủng hoảng chế độ cũ",
+      "Tư tưởng quyền công dân",
+      "Diễn biến phức tạp không tuyến tính"
+    ],
+    "level": 2
+  },
+  {
+    "id": "his_colonial",
+    "category": "history",
+    "title": "Phi thực dân hóa trong thế kỷ XX là gì?",
+    "question": "Vì sao sau Thế chiến II nhiều nước châu Á và châu Phi giành độc lập?",
+    "reference": "Phi thực dân hóa là quá trình chấm dứt sự cai trị thuộc địa, do phong trào độc lập bản địa, biến đổi cán cân quyền lực sau chiến tranh và sức ép quốc tế. Độc lập chính trị không tự động giải quyết mọi bất bình đẳng kinh tế hay biên giới.",
+    "checkpoints": [
+      "Phong trào tự quyết",
+      "Tác động Thế chiến II",
+      "Thách thức sau độc lập"
+    ],
+    "level": 2
+  },
+  {
+    "id": "his_coldwar",
+    "category": "history",
+    "title": "Chiến tranh Lạnh có thật sự “lạnh”?",
+    "question": "Vì sao Mỹ và Liên Xô không giao chiến trực tiếp toàn diện nhưng nhiều nước vẫn chịu hậu quả chiến tranh?",
+    "reference": "Chiến tranh Lạnh là đối đầu địa chính trị, ý thức hệ và quân sự giữa hai khối do Mỹ và Liên Xô dẫn dắt. Cạnh tranh diễn ra qua chạy đua vũ trang, ngoại giao, tuyên truyền và các xung đột ủy nhiệm ở nhiều quốc gia.",
+    "checkpoints": [
+      "Hai cực quyền lực",
+      "Răn đe hạt nhân",
+      "Xung đột ủy nhiệm và hệ quả toàn cầu"
+    ],
+    "level": 2
+  },
+  {
+    "id": "his_doimoi",
+    "category": "history",
+    "title": "Đổi Mới 1986 tác động kinh tế Việt Nam thế nào?",
+    "question": "Vì sao thay đổi cơ chế kinh tế lại có thể ảnh hưởng sâu đến sản xuất, lưu thông hàng hóa và đời sống?",
+    "reference": "Đổi Mới từ năm 1986 là tiến trình cải cách kinh tế Việt Nam, từng bước giảm cơ chế phân phối tập trung và mở rộng các hoạt động kinh tế theo cơ chế thị trường dưới quản lý nhà nước. Tiến trình thúc đẩy tăng trưởng, hội nhập nhưng cũng đặt ra thách thức về phân hóa và quản lý.",
+    "checkpoints": [
+      "Thay đổi cơ chế phân bổ nguồn lực",
+      "Mở rộng sản xuất và hội nhập",
+      "Kết quả và thách thức"
+    ],
+    "level": 2
+  },
+  {
+    "id": "his_sources",
+    "category": "history",
+    "title": "Làm sao biết một câu chuyện lịch sử có đáng tin?",
+    "question": "Một bài đăng khẳng định “người xưa đều nghĩ như vậy”, bạn sẽ kiểm tra thế nào?",
+    "reference": "Nhà sử học đối chiếu nhiều nguồn sơ cấp như thư từ, hiện vật, hồ sơ với nguồn thứ cấp như nghiên cứu. Cần xem tác giả, hoàn cảnh, mục đích, sự thiếu vắng bằng chứng và góc nhìn khác nhau trước khi kết luận.",
+    "checkpoints": [
+      "Phân biệt sơ cấp và thứ cấp",
+      "Đối chiếu nguồn độc lập",
+      "Xét bối cảnh và thiên lệch"
+    ],
+    "level": 1
+  },
+  {
+    "id": "civ_state",
+    "category": "civics",
+    "title": "Nhà nước và chính phủ có giống nhau?",
+    "question": "Vì sao người đứng đầu chính phủ thay đổi nhưng nhà nước vẫn tồn tại?",
+    "reference": "Nhà nước thường chỉ hệ thống thiết chế có chủ quyền và quyền lực công trên một lãnh thổ; chính phủ thường là bộ phận điều hành trong bộ máy đó. Cấu trúc và cách dùng thuật ngữ khác nhau tùy hiến pháp mỗi nước.",
+    "checkpoints": [
+      "Thể chế dài hạn và bộ máy điều hành",
+      "Chủ quyền lãnh thổ",
+      "Khác biệt giữa các hệ thống"
+    ],
+    "level": 1
+  },
+  {
+    "id": "civ_constitution",
+    "category": "civics",
+    "title": "Hiến pháp có vai trò gì?",
+    "question": "Tại sao một quốc gia cần những nguyên tắc nền tảng cao hơn luật thông thường?",
+    "reference": "Hiến pháp quy định nền tảng tổ chức quyền lực nhà nước, nguyên tắc hoạt động và thường ghi nhận các quyền, nghĩa vụ căn bản. Hiến pháp có vị trí pháp lý cao và cơ chế sửa đổi thường chặt chẽ hơn luật thông thường.",
+    "checkpoints": [
+      "Tổ chức quyền lực nhà nước",
+      "Quyền và nghĩa vụ nền tảng",
+      "Thứ bậc pháp lý"
+    ],
+    "level": 1
+  },
+  {
+    "id": "civ_powers",
+    "category": "civics",
+    "title": "Lập pháp, hành pháp, tư pháp làm gì?",
+    "question": "Nếu một chính sách được đề xuất, thông qua và bị tranh chấp, ba chức năng quyền lực công liên quan thế nào?",
+    "reference": "Lập pháp tạo quy phạm pháp luật; hành pháp tổ chức thực thi; tư pháp giải quyết tranh chấp và xét xử theo pháp luật. Mức độ phân công, phối hợp và kiểm soát giữa các chức năng khác nhau tùy mô hình chính trị mỗi nước.",
+    "checkpoints": [
+      "Chức năng lập pháp",
+      "Chức năng hành pháp và tư pháp",
+      "Cách tổ chức tùy quốc gia"
+    ],
+    "level": 1
+  },
+  {
+    "id": "civ_elections",
+    "category": "civics",
+    "title": "Bầu cử và đại diện chính trị vận hành ra sao?",
+    "question": "Vì sao hai quốc gia cùng có bầu cử nhưng kết quả đại diện cử tri có thể rất khác nhau?",
+    "reference": "Thiết kế bầu cử bao gồm quy tắc ứng cử, phân chia đơn vị bầu cử, cách quy đổi phiếu thành ghế và cơ chế giám sát. Hệ thống đa số và tỷ lệ có các đánh đổi khác nhau về tính đại diện, ổn định và trách nhiệm giải trình.",
+    "checkpoints": [
+      "Quy tắc bầu cử và cách tính ghế",
+      "Đại diện và trách nhiệm giải trình",
+      "Đánh đổi giữa các hệ thống"
+    ],
+    "level": 2
+  },
+  {
+    "id": "civ_tax",
+    "category": "civics",
+    "title": "Tiền thuế đi đâu?",
+    "question": "Hãy giải thích mối quan hệ giữa thuế, ngân sách nhà nước và dịch vụ công.",
+    "reference": "Thuế là nguồn thu quan trọng của ngân sách công, cùng các nguồn thu khác dùng để chi cho hạ tầng, giáo dục, y tế, an ninh và quản lý nhà nước. Phân bổ ngân sách có chi phí cơ hội, cần giám sát, công khai và đánh giá hiệu quả.",
+    "checkpoints": [
+      "Thu ngân sách",
+      "Chi dịch vụ và đầu tư công",
+      "Minh bạch và chi phí cơ hội"
+    ],
+    "level": 1
+  },
+  {
+    "id": "civ_rights",
+    "category": "civics",
+    "title": "Quyền công dân đi kèm trách nhiệm thế nào?",
+    "question": "Có phải mọi quyền đều tuyệt đối và muốn thực hiện ra sao cũng được?",
+    "reference": "Quyền con người và quyền công dân được xác lập qua pháp luật quốc gia và các chuẩn mực quốc tế. Một số quyền có thể chịu giới hạn do luật định nhằm bảo vệ quyền của người khác hoặc lợi ích công chính đáng; các giới hạn phải được xem xét theo nguyên tắc pháp quyền và tính tương xứng.",
+    "checkpoints": [
+      "Phân biệt quyền với nghĩa vụ",
+      "Giới hạn quyền phải có căn cứ",
+      "Bảo vệ quyền của người khác"
+    ],
+    "level": 2
+  },
+  {
+    "id": "civ_un",
+    "category": "civics",
+    "title": "Liên Hợp Quốc có phải chính phủ thế giới?",
+    "question": "Tại sao Liên Hợp Quốc có thể đưa ra nghị quyết nhưng không tự động điều hành mọi quốc gia?",
+    "reference": "Liên Hợp Quốc là tổ chức liên chính phủ thành lập năm 1945, hoạt động dựa trên Hiến chương và sự tham gia của các quốc gia thành viên. Vai trò gồm duy trì hòa bình, hợp tác và phát triển; quyền hạn của các cơ quan khác nhau và có giới hạn bởi chủ quyền cùng cơ chế ra quyết định.",
+    "checkpoints": [
+      "Tổ chức liên chính phủ",
+      "Các cơ quan có vai trò khác nhau",
+      "Giới hạn quyền lực và chủ quyền"
+    ],
+    "level": 2
+  },
+  {
+    "id": "civ_policy",
+    "category": "civics",
+    "title": "Một chính sách công được đánh giá ra sao?",
+    "question": "Nếu thành phố quyết định cấm xe ở một tuyến đường, cần xem dữ liệu gì trước khi khẳng định chính sách thành công?",
+    "reference": "Đánh giá chính sách cần xác định mục tiêu, chỉ tiêu đo lường, nhóm chịu ảnh hưởng và đối chứng thích hợp. Phải tách tác động thực sự của chính sách khỏi thay đổi do thời tiết, mùa vụ hay yếu tố khác; đồng thời xét chi phí và phân phối lợi ích.",
+    "checkpoints": [
+      "Mục tiêu và chỉ tiêu đo",
+      "Nhân quả thay vì chỉ trước–sau",
+      "Chi phí và nhóm chịu ảnh hưởng"
+    ],
+    "level": 2
+  },
+  {
+    "id": "cul_heritage",
+    "category": "culture",
+    "title": "Di sản phi vật thể là gì?",
+    "question": "Vì sao một làn điệu dân ca hoặc nghề thủ công có thể được coi là di sản dù không phải tòa nhà hay hiện vật?",
+    "reference": "Di sản văn hóa phi vật thể bao gồm tập quán, nghệ thuật biểu diễn, tri thức và kỹ năng được cộng đồng truyền qua các thế hệ. Giá trị nằm ở thực hành sống và cộng đồng nắm giữ, nên bảo tồn không chỉ là ghi âm hay trưng bày.",
+    "checkpoints": [
+      "Thực hành văn hóa sống",
+      "Truyền qua thế hệ",
+      "Vai trò cộng đồng"
+    ],
+    "level": 1
+  },
+  {
+    "id": "cul_language",
+    "category": "culture",
+    "title": "Ngôn ngữ có đứng yên không?",
+    "question": "Vì sao cùng tiếng Việt mà từ ngữ của ông bà và giới trẻ có thể khác nhau?",
+    "reference": "Ngôn ngữ biến đổi qua giao tiếp, di cư, công nghệ và tiếp xúc văn hóa. Từ mới xuất hiện, nghĩa cũ thay đổi, một số cách nói biến mất; sự thay đổi không tự nó đồng nghĩa ngôn ngữ suy thoái.",
+    "checkpoints": [
+      "Ngôn ngữ biến đổi theo xã hội",
+      "Vay mượn và sáng tạo từ",
+      "Không đồng nhất thay đổi với suy thoái"
+    ],
+    "level": 1
+  },
+  {
+    "id": "cul_tet",
+    "category": "culture",
+    "title": "Tết âm lịch ở các nước giống và khác ra sao?",
+    "question": "Vì sao nhiều cộng đồng châu Á cùng đón năm mới âm lịch nhưng phong tục và thời điểm có thể khác?",
+    "reference": "Nhiều lễ năm mới dựa trên lịch âm-dương hoặc truyền thống lịch địa phương. Việc tổ chức chịu ảnh hưởng của lịch sử, tín ngưỡng, khí hậu và giao lưu văn hóa nên có nét chung như đoàn tụ nhưng khác món ăn, nghi thức, biểu tượng.",
+    "checkpoints": [
+      "Cơ sở lịch truyền thống",
+      "Nét chung đoàn tụ",
+      "Khác biệt lịch sử văn hóa"
+    ],
+    "level": 1
+  },
+  {
+    "id": "cul_food",
+    "category": "culture",
+    "title": "Ẩm thực kể câu chuyện di cư thế nào?",
+    "question": "Một món ăn “truyền thống” có thể chứa nguyên liệu du nhập từ nơi khác không?",
+    "reference": "Ẩm thực thay đổi nhờ thương mại, di cư, khí hậu và tương tác văn hóa. Nhiều nguyên liệu nay rất quen thuộc vốn xuất hiện ở nơi khác rồi được thích nghi thành bản sắc địa phương; vì vậy văn hóa không bất biến.",
+    "checkpoints": [
+      "Thương mại và di cư",
+      "Thích nghi nguyên liệu",
+      "Bản sắc hình thành qua thời gian"
+    ],
+    "level": 1
+  },
+  {
+    "id": "cul_music",
+    "category": "culture",
+    "title": "Vì sao âm nhạc gắn với bản sắc cộng đồng?",
+    "question": "Tại sao chỉ nghe vài nhịp điệu hoặc nhạc cụ đã gợi lên một vùng miền hay ký ức tập thể?",
+    "reference": "Âm nhạc mang theo ngôn ngữ, nhạc cụ, nghi lễ và thói quen nghe từ cộng đồng. Qua giáo dục, truyền thông và trải nghiệm chung, con người gắn âm thanh với ký ức và bản sắc, nhưng một truyền thống luôn có biến thể và giao thoa.",
+    "checkpoints": [
+      "Âm nhạc là thực hành xã hội",
+      "Ký ức và biểu tượng",
+      "Giao thoa thay vì ranh giới cố định"
+    ],
+    "level": 1
+  },
+  {
+    "id": "cul_festival",
+    "category": "culture",
+    "title": "Lễ hội có vai trò gì ngoài giải trí?",
+    "question": "Vì sao một cộng đồng duy trì lễ hội qua nhiều thế hệ dù tốn thời gian và nguồn lực?",
+    "reference": "Lễ hội có thể củng cố quan hệ cộng đồng, truyền ký ức, niềm tin và quy tắc xã hội, đồng thời tạo hoạt động kinh tế. Ý nghĩa không giống nhau với mọi nhóm; một số lễ hội cũng thay đổi để thích nghi với hiện đại.",
+    "checkpoints": [
+      "Gắn kết cộng đồng",
+      "Truyền tải giá trị và ký ức",
+      "Tác động kinh tế và biến đổi"
+    ],
+    "level": 1
+  },
+  {
+    "id": "cul_appropriation",
+    "category": "culture",
+    "title": "Học hỏi văn hóa khác có phải luôn xấu?",
+    "question": "Ranh giới nào giữa trân trọng một nét văn hóa và sử dụng nó thiếu tôn trọng?",
+    "reference": "Giao lưu văn hóa là bình thường và góp phần sáng tạo. Tranh luận về chiếm dụng văn hóa thường phát sinh khi yếu tố văn hóa bị sử dụng tách khỏi bối cảnh, trục lợi hoặc thiếu ghi nhận, đặc biệt trong tương quan quyền lực bất cân xứng.",
+    "checkpoints": [
+      "Giao lưu văn hóa là bình thường",
+      "Bối cảnh và sự ghi nhận",
+      "Tương quan quyền lực"
+    ],
+    "level": 2
+  },
+  {
+    "id": "cul_unesco",
+    "category": "culture",
+    "title": "UNESCO công nhận di sản nghĩa là gì?",
+    "question": "Danh hiệu di sản thế giới có đồng nghĩa địa điểm đó được UNESCO sở hữu hay tự động bảo vệ tuyệt đối không?",
+    "reference": "Công nhận di sản theo các công ước liên quan nhấn mạnh giá trị và trách nhiệm bảo vệ, nhưng quyền sở hữu và quản lý vẫn theo pháp luật và cơ chế của quốc gia, cộng đồng liên quan. Danh hiệu không thay thế công tác bảo tồn thực tế.",
+    "checkpoints": [
+      "Công nhận giá trị",
+      "Trách nhiệm quản lý bảo tồn",
+      "Không đồng nghĩa sở hữu"
+    ],
+    "level": 1
+  },
+  {
+    "id": "soc_urban",
+    "category": "society",
+    "title": "Đô thị hóa tạo ra cơ hội và sức ép gì?",
+    "question": "Vì sao càng nhiều người chuyển đến thành phố, năng suất có thể tăng nhưng nhà ở lại đắt hơn?",
+    "reference": "Tập trung người, doanh nghiệp và hạ tầng có thể tạo hiệu ứng quy mô, chia sẻ tri thức và việc làm. Nhưng nếu giao thông, nhà ở và dịch vụ không theo kịp, ùn tắc, ô nhiễm và chi phí sinh hoạt tăng.",
+    "checkpoints": [
+      "Lợi ích tập trung",
+      "Hạn chế hạ tầng và nhà ở",
+      "Đánh đổi phát triển đô thị"
+    ],
+    "level": 1
+  },
+  {
+    "id": "soc_population",
+    "category": "society",
+    "title": "Một quốc gia già hóa dân số khi nào?",
+    "question": "Vì sao tỷ lệ sinh giảm hôm nay có thể tạo áp lực lên quỹ hưu trí vài chục năm sau?",
+    "reference": "Chuyển đổi dân số thường gồm giảm tử vong, rồi giảm sinh khi kinh tế xã hội thay đổi. Tỷ trọng người cao tuổi tăng có thể làm thay đổi quy mô lao động và nhu cầu y tế, an sinh; mức độ tác động phụ thuộc năng suất và chính sách.",
+    "checkpoints": [
+      "Giảm sinh và tuổi thọ tăng",
+      "Tỷ lệ phụ thuộc",
+      "Tác động chậm theo thế hệ"
+    ],
+    "level": 2
+  },
+  {
+    "id": "soc_migration",
+    "category": "society",
+    "title": "Điều gì khiến con người di cư?",
+    "question": "Một người rời quê lên thành phố làm việc là do “đẩy” hay “kéo”?",
+    "reference": "Di cư thường do kết hợp yếu tố đẩy như thiếu việc làm, thiên tai, xung đột với yếu tố kéo như cơ hội học tập, thu nhập và an toàn. Mạng lưới gia đình, chi phí di chuyển và luật pháp cũng ảnh hưởng quyết định.",
+    "checkpoints": [
+      "Yếu tố đẩy",
+      "Yếu tố kéo",
+      "Ràng buộc và mạng lưới xã hội"
+    ],
+    "level": 1
+  },
+  {
+    "id": "soc_gini",
+    "category": "society",
+    "title": "Bất bình đẳng đo bằng cách nào?",
+    "question": "Nếu GDP bình quân đầu người tăng, có thể kết luận mọi người đều khá lên bằng nhau không?",
+    "reference": "GDP bình quân là giá trị trung bình, không cho biết phân phối thu nhập. Hệ số Gini hoặc dữ liệu nhóm thu nhập cho góc nhìn về mức độ bất bình đẳng; muốn đánh giá đời sống cần xét thêm chi phí và dịch vụ công.",
+    "checkpoints": [
+      "Trung bình không phải phân phối",
+      "Hệ số Gini",
+      "Đo bổ sung chất lượng sống"
+    ],
+    "level": 2
+  },
+  {
+    "id": "soc_norms",
+    "category": "society",
+    "title": "Chuẩn mực xã hội khác luật pháp thế nào?",
+    "question": "Vì sao một hành vi không bị phạt theo luật nhưng vẫn khiến người khác phản ứng mạnh?",
+    "reference": "Luật được thiết lập và thực thi bởi các thiết chế chính thức; chuẩn mực xã hội là kỳ vọng ứng xử được cộng đồng duy trì bằng khen chê, danh tiếng và quan hệ. Hai hệ thống có thể hỗ trợ hoặc mâu thuẫn nhau và biến đổi theo thời gian.",
+    "checkpoints": [
+      "Luật là quy tắc chính thức",
+      "Chuẩn mực qua kỳ vọng cộng đồng",
+      "Cơ chế thực thi khác nhau"
+    ],
+    "level": 1
+  },
+  {
+    "id": "soc_mobility",
+    "category": "society",
+    "title": "Giáo dục có luôn tạo ra dịch chuyển xã hội?",
+    "question": "Vì sao bằng cấp giống nhau nhưng hai người có xuất phát điểm gia đình khác nhau vẫn có cơ hội rất khác?",
+    "reference": "Giáo dục có thể tăng kỹ năng và cơ hội thu nhập, nhưng tiếp cận trường tốt, mạng lưới quan hệ, tài sản và phân biệt đối xử cũng ảnh hưởng kết quả. Dịch chuyển xã hội nên được đo theo thế hệ và nhóm dân cư.",
+    "checkpoints": [
+      "Vai trò kỹ năng giáo dục",
+      "Bất lợi xuất phát điểm",
+      "Đo dịch chuyển theo thế hệ"
+    ],
+    "level": 2
+  },
+  {
+    "id": "soc_misinformation",
+    "category": "society",
+    "title": "Vì sao tin sai lan nhanh trên mạng?",
+    "question": "Một bài đăng giật gân được hàng nghìn lượt chia sẻ có phải là bằng chứng thông tin đó đúng?",
+    "reference": "Nội dung gây cảm xúc mạnh có thể được chia sẻ nhanh, trong khi thuật toán đề xuất và tâm lý xác nhận củng cố niềm tin. Lượt tương tác không thay thế bằng chứng; cần kiểm tra nguồn gốc, ngày đăng và đối chiếu nguồn độc lập.",
+    "checkpoints": [
+      "Cảm xúc và thuật toán",
+      "Thiên kiến xác nhận",
+      "Xác minh đa nguồn"
+    ],
+    "level": 1
+  },
+  {
+    "id": "soc_publicgoods",
+    "category": "society",
+    "title": "Hàng hóa công cộng khác tài sản chung ra sao?",
+    "question": "Vì sao chiếu sáng đường phố và nguồn cá tự nhiên có vấn đề quản lý khác nhau?",
+    "reference": "Hàng hóa công cộng điển hình không cạnh tranh trong tiêu dùng và khó loại trừ người dùng (như đèn đường); tài nguyên chung khó loại trừ nhưng có tính cạnh tranh (như cá tự nhiên). Cơ chế cung ứng và nguy cơ khai thác quá mức khác nhau.",
+    "checkpoints": [
+      "Không loại trừ",
+      "Cạnh tranh trong tiêu dùng",
+      "Tác động lên cách quản lý"
+    ],
+    "level": 2
+  },
+  {
+    "id": "sci_theory",
+    "category": "science",
+    "title": "Giả thuyết khác lý thuyết khoa học thế nào?",
+    "question": "Vì sao “chỉ là một lý thuyết” không phải lời bác bỏ mạnh đối với một giải thích khoa học?",
+    "reference": "Giả thuyết là đề xuất có thể kiểm tra; lý thuyết khoa học là hệ thống giải thích được hỗ trợ bởi nhiều bằng chứng, có khả năng đưa ra dự đoán và được thử thách liên tục. Trong đời thường, từ “lý thuyết” đôi khi chỉ phỏng đoán.",
+    "checkpoints": [
+      "Giả thuyết kiểm chứng được",
+      "Lý thuyết tích lũy bằng chứng",
+      "Khả năng dự đoán và bị kiểm tra"
+    ],
+    "level": 1
+  },
+  {
+    "id": "sci_vaccine",
+    "category": "science",
+    "title": "Vaccine giúp cơ thể ghi nhớ tác nhân gây bệnh ra sao?",
+    "question": "Tại sao một mũi vaccine có thể làm cơ thể phản ứng nhanh hơn khi gặp mầm bệnh sau này?",
+    "reference": "Vaccine trình diện thành phần hoặc thông tin về tác nhân gây bệnh cho hệ miễn dịch, kích hoạt đáp ứng và tạo các tế bào nhớ. Khi gặp mầm bệnh thật, cơ thể có thể phản ứng nhanh hơn, giảm nguy cơ bệnh nặng; hiệu quả khác nhau theo bệnh và vaccine.",
+    "checkpoints": [
+      "Nhận diện kháng nguyên",
+      "Tế bào miễn dịch nhớ",
+      "Giảm nguy cơ không đồng nghĩa bảo vệ tuyệt đối"
+    ],
+    "level": 2
+  },
+  {
+    "id": "sci_greenhouse",
+    "category": "science",
+    "title": "Hiệu ứng nhà kính hoạt động thế nào?",
+    "question": "Vì sao CO₂ tăng có thể khiến nhiệt độ trung bình Trái Đất tăng?",
+    "reference": "Ánh sáng Mặt Trời chủ yếu ở bước sóng ngắn đi qua khí quyển; mặt đất phát bức xạ hồng ngoại. Khí nhà kính hấp thụ và phát lại một phần bức xạ này, thay đổi cân bằng năng lượng và làm nhiệt độ tăng khi nồng độ tăng, các yếu tố khác không đổi.",
+    "checkpoints": [
+      "Bức xạ Mặt Trời và hồng ngoại",
+      "Khí nhà kính hấp thụ/phát xạ",
+      "Cân bằng năng lượng"
+    ],
+    "level": 2
+  },
+  {
+    "id": "sci_biodiversity",
+    "category": "science",
+    "title": "Đa dạng sinh học quan trọng ra sao?",
+    "question": "Vì sao mất một loài đôi khi tác động đến cả hệ sinh thái dù nó không có giá trị kinh tế rõ ràng?",
+    "reference": "Loài tương tác qua chuỗi thức ăn, thụ phấn, phân hủy và các quá trình khác. Suy giảm đa dạng sinh học có thể làm hệ sinh thái kém chống chịu trước biến động. Tác động phụ thuộc vai trò sinh thái chứ không chỉ số lượng cá thể.",
+    "checkpoints": [
+      "Mạng lưới loài tương tác",
+      "Dịch vụ hệ sinh thái",
+      "Khả năng chống chịu"
+    ],
+    "level": 1
+  },
+  {
+    "id": "sci_water",
+    "category": "science",
+    "title": "Nước mưa từ đâu đến?",
+    "question": "Hãy mô tả hành trình của một giọt nước từ biển, qua mây, đến sông rồi quay lại biển.",
+    "reference": "Năng lượng Mặt Trời làm nước bay hơi, hơi nước ngưng tụ thành mây và rơi xuống dưới dạng mưa hoặc tuyết. Nước thấm xuống đất, chảy trên bề mặt hoặc được thực vật thoát hơi, rồi tiếp tục tuần hoàn.",
+    "checkpoints": [
+      "Bay hơi",
+      "Ngưng tụ và giáng thủy",
+      "Dòng chảy và thấm"
+    ],
+    "level": 1
+  },
+  {
+    "id": "sci_antibiotics",
+    "category": "science",
+    "title": "Vì sao vi khuẩn kháng kháng sinh?",
+    "question": "Có phải kháng sinh làm vi khuẩn “tập luyện để mạnh hơn” như vận động viên không?",
+    "reference": "Biến dị di truyền và trao đổi gen tạo ra khác biệt về khả năng kháng thuốc; dùng kháng sinh tạo áp lực chọn lọc khiến dòng kháng thuốc có lợi thế sống sót và sinh sôi. Cần dùng thuốc theo chỉ định chuyên môn; không phải vi khuẩn cố ý rèn luyện.",
+    "checkpoints": [
+      "Biến dị/gen kháng thuốc",
+      "Chọn lọc tự nhiên",
+      "Lạm dụng thuốc làm tăng áp lực chọn lọc"
+    ],
+    "level": 2
+  },
+  {
+    "id": "sci_genes",
+    "category": "science",
+    "title": "Gen có quyết định toàn bộ con người?",
+    "question": "Vì sao hai người có gen rất giống nhau vẫn có thể phát triển khác nhau?",
+    "reference": "Gen mang thông tin di truyền ảnh hưởng tới nhiều đặc điểm, nhưng môi trường, dinh dưỡng, trải nghiệm và điều hòa biểu hiện gen cũng có vai trò. Phần lớn đặc điểm phức tạp là kết quả tương tác đa gen và môi trường.",
+    "checkpoints": [
+      "Vai trò di truyền",
+      "Môi trường và biểu hiện gen",
+      "Không quy giản đặc điểm phức tạp về một gen"
+    ],
+    "level": 1
+  },
+  {
+    "id": "sci_causality",
+    "category": "science",
+    "title": "Tương quan có phải quan hệ nhân quả?",
+    "question": "Nếu nơi bán nhiều kem cũng có nhiều vụ đuối nước, có phải kem gây đuối nước?",
+    "reference": "Hai biến cùng tăng không chứng minh biến này gây ra biến kia. Thời tiết nóng có thể khiến cả việc mua kem và bơi lội tăng, tạo tương quan do yếu tố thứ ba. Cần thiết kế nghiên cứu phù hợp để suy luận nhân quả.",
+    "checkpoints": [
+      "Tương quan không đủ",
+      "Biến gây nhiễu",
+      "Cần thiết kế kiểm định nhân quả"
+    ],
+    "level": 1
+  },
+  {
+    "id": "eco_inflation",
+    "category": "economy",
+    "title": "Lạm phát là gì và vì sao xảy ra?",
+    "question": "Nếu cùng 100.000 đồng nhưng năm sau mua được ít hàng hơn, bạn sẽ giải thích điều gì đã xảy ra?",
+    "reference": "Lạm phát là mức giá chung của hàng hóa, dịch vụ tăng theo thời gian làm sức mua của một đơn vị tiền giảm. Nguyên nhân có thể đến từ tổng cầu, chi phí đầu vào, cung tiền và kỳ vọng; không đồng nghĩa mọi mặt hàng cùng tăng giá.",
+    "checkpoints": [
+      "Mức giá chung tăng",
+      "Sức mua giảm",
+      "Nhiều nguyên nhân và ngoại lệ"
+    ],
+    "level": 1
+  },
+  {
+    "id": "eco_fx",
+    "category": "economy",
+    "title": "Tỷ giá giữa hai đồng tiền được hình thành thế nào?",
+    "question": "Tại sao tỷ giá VND/USD có thể thay đổi dù cả hai nước đều không in thêm tiền trong ngày đó?",
+    "reference": "Tỷ giá phản ánh cung cầu ngoại tệ và kỳ vọng, chịu ảnh hưởng từ thương mại, dòng vốn, chênh lệch lãi suất, rủi ro và chính sách điều hành. Chế độ tỷ giá quyết định nhà nước can thiệp ở mức nào; không chỉ do lượng tiền in ra.",
+    "checkpoints": [
+      "Cung cầu ngoại tệ",
+      "Dòng vốn và kỳ vọng",
+      "Vai trò cơ chế điều hành"
+    ],
+    "level": 2
+  },
+  {
+    "id": "eco_debt",
+    "category": "economy",
+    "title": "Vì sao nợ toàn cầu có thể lớn hơn GDP?",
+    "question": "Nếu nợ toàn thế giới bằng ba lần GDP năm đó, có phải thế giới “nợ nhiều hơn số tiền tồn tại” không?",
+    "reference": "Nợ là tổng nghĩa vụ còn tồn tại tại một thời điểm (stock); GDP đo giá trị gia tăng tạo ra trong một khoảng thời gian (flow). Tỷ lệ trên 100% không tự động nghĩa là không thể trả nợ; cần xét kỳ hạn, lãi suất, tài sản và khả năng tạo thu nhập.",
+    "checkpoints": [
+      "Stock khác flow",
+      "GDP không phải lượng tiền mặt",
+      "Khả năng trả phụ thuộc cấu trúc nợ"
+    ],
+    "level": 2
+  },
+  {
+    "id": "eco_opportunity",
+    "category": "economy",
+    "title": "Chi phí cơ hội có phải tiền phải trả?",
+    "question": "Khi chọn dành tối thứ bảy đi làm thêm thay vì học một kỹ năng mới, chi phí cơ hội nằm ở đâu?",
+    "reference": "Chi phí cơ hội là giá trị của phương án tốt nhất bị bỏ qua khi đưa ra lựa chọn. Nó không nhất thiết là khoản tiền thực chi; gồm cả thời gian, trải nghiệm và lợi ích tương lai không nhận được.",
+    "checkpoints": [
+      "Lựa chọn có đánh đổi",
+      "Phương án tốt nhất bị bỏ qua",
+      "Không chỉ là chi phí tiền mặt"
+    ],
+    "level": 1
+  },
+  {
+    "id": "eco_trade",
+    "category": "economy",
+    "title": "Vì sao các nước vẫn giao thương khi tự sản xuất được?",
+    "question": "Một nước làm tốt cả gạo lẫn máy móc, vì sao vẫn có thể có lợi khi nhập một trong hai?",
+    "reference": "Lợi thế so sánh dựa trên chi phí cơ hội tương đối, không phải chỉ năng suất tuyệt đối. Chuyên môn hóa và trao đổi có thể tăng tổng lượng sản phẩm khả dụng, nhưng lợi ích phân bổ không đều và phụ thuộc chi phí giao dịch.",
+    "checkpoints": [
+      "Chi phí cơ hội tương đối",
+      "Chuyên môn hóa",
+      "Phân phối lợi ích và chi phí"
+    ],
+    "level": 2
+  },
+  {
+    "id": "eco_policy",
+    "category": "economy",
+    "title": "Chính sách tiền tệ và tài khóa khác nhau thế nào?",
+    "question": "Khi kinh tế tăng trưởng chậm, ngân hàng trung ương giảm lãi suất và chính phủ tăng chi đầu tư có cùng cơ chế không?",
+    "reference": "Chính sách tiền tệ tác động điều kiện tiền tệ và tín dụng qua công cụ của ngân hàng trung ương; chính sách tài khóa liên quan thuế và chi ngân sách của chính phủ. Hai chính sách có mục tiêu, độ trễ và tác dụng phụ khác nhau.",
+    "checkpoints": [
+      "Công cụ tiền tệ và lãi suất",
+      "Thuế và chi ngân sách",
+      "Độ trễ và đánh đổi"
+    ],
+    "level": 2
+  },
+  {
+    "id": "eco_gdp",
+    "category": "economy",
+    "title": "GDP đo được và bỏ sót những gì?",
+    "question": "Nếu GDP tăng, có thể kết luận hạnh phúc và chất lượng sống của tất cả người dân đều tăng?",
+    "reference": "GDP đo giá trị hàng hóa dịch vụ cuối cùng được sản xuất trong một kỳ theo phạm vi thống kê; nó không trực tiếp đo phân phối thu nhập, lao động không trả công, sức khỏe tinh thần hay tổn hại môi trường. Cần nhiều chỉ số bổ sung.",
+    "checkpoints": [
+      "GDP là thước đo sản xuất",
+      "Không đo trực tiếp phúc lợi",
+      "Cần chỉ số bổ sung"
+    ],
+    "level": 1
+  },
+  {
+    "id": "eco_compound",
+    "category": "economy",
+    "title": "Vì sao lãi kép mạnh theo thời gian?",
+    "question": "Vì sao cùng lợi suất nhưng bắt đầu đầu tư sớm vài năm có thể tạo khác biệt lớn sau hàng chục năm?",
+    "reference": "Lãi kép xảy ra khi lợi tức tiếp tục được giữ lại để tạo lợi tức mới. Với suất sinh lợi r ổn định, số tiền có thể tăng theo công thức gốc × (1+r)^n; ngoài đời lợi suất biến động và rủi ro, chi phí, lạm phát đều quan trọng.",
+    "checkpoints": [
+      "Lợi tức sinh thêm lợi tức",
+      "Tăng theo cấp số nhân",
+      "Giả định lợi suất và rủi ro"
+    ],
+    "level": 1
+  },
+  {
+    "id": "pro_channel",
+    "category": "profession",
+    "title": "Vì sao xung đột kênh phân phối xảy ra?",
+    "question": "Một đại lý bán lấn sang địa bàn khác với giá thấp hơn, tác động đến các đại lý còn lại như thế nào?",
+    "reference": "Xung đột kênh có thể phát sinh khi địa bàn, chính sách giá hoặc lợi ích giữa các cấp phân phối chồng lấn. Cần phân biệt hành vi cạnh tranh hợp pháp với cam kết kênh, dựa trên dữ liệu bán, chi phí và cơ chế quản trị phù hợp pháp luật.",
+    "checkpoints": [
+      "Lợi ích các cấp khác nhau",
+      "Tác động giá và niềm tin",
+      "Cần đánh giá dữ liệu và pháp lý"
+    ],
+    "level": 2
+  },
+  {
+    "id": "pro_sellin",
+    "category": "profession",
+    "title": "Sell-in tăng có đồng nghĩa bán tốt?",
+    "question": "Cuối quý doanh nghiệp đẩy hàng cho đại lý, doanh số tăng mạnh: rủi ro ẩn ở đâu?",
+    "reference": "Sell-in là bán vào kênh, sell-out là hàng bán từ kênh ra thị trường. Sell-in tăng nhưng sell-out chậm làm tồn kho đại lý phình to, có thể gây giảm đơn kỳ sau, áp lực chiết khấu và dòng tiền.",
+    "checkpoints": [
+      "Phân biệt sell-in/sell-out",
+      "Rủi ro tồn kho kênh",
+      "Ảnh hưởng chu kỳ sau"
+    ],
+    "level": 1
+  },
+  {
+    "id": "pro_forecast",
+    "category": "profession",
+    "title": "Vì sao forecast thường bị lệch?",
+    "question": "Nếu một đại lý đặt hàng đột biến do chương trình khuyến mãi, có nên lấy tháng đó làm nhu cầu bình thường?",
+    "reference": "Dự báo nên phân biệt nhu cầu nền với tác động khuyến mãi, thiếu hàng, biến động mùa vụ và đơn hàng bất thường. Backtest theo thời gian giúp đo độ lệch có hệ thống (bias) và mức sai số, thay vì chọn mô hình chỉ vì khớp dữ liệu cũ.",
+    "checkpoints": [
+      "Tách biến ngoại sinh",
+      "Backtest đúng thời gian",
+      "Đo bias và sai số"
+    ],
+    "level": 2
+  },
+  {
+    "id": "pro_safety",
+    "category": "profession",
+    "title": "Safety stock dùng để giải quyết điều gì?",
+    "question": "Tại sao hai mã hàng có cùng nhu cầu trung bình nhưng nên giữ tồn kho an toàn khác nhau?",
+    "reference": "Safety stock giúp giảm nguy cơ thiếu hàng khi nhu cầu và thời gian cung ứng biến động. Mức tồn nên dựa trên phân phối sai số dự báo, độ bất ổn lead time, mục tiêu service level và chi phí lưu kho.",
+    "checkpoints": [
+      "Biến động nhu cầu và lead time",
+      "Mục tiêu mức phục vụ",
+      "Chi phí đánh đổi"
+    ],
+    "level": 2
+  },
+  {
+    "id": "pro_rfm",
+    "category": "profession",
+    "title": "RFM dự báo rủi ro rời bỏ đại lý ra sao?",
+    "question": "Một đại lý từng mua rất nhiều nhưng 4 tháng gần đây ngừng đặt hàng, RFM cảnh báo điều gì?",
+    "reference": "RFM xem mức gần đây mua (Recency), tần suất mua (Frequency) và giá trị mua (Monetary). Đại lý giá trị cao nhưng Recency xấu đi có thể cần ưu tiên chăm sóc; phải xét chu kỳ mua tự nhiên và mùa vụ tránh báo động giả.",
+    "checkpoints": [
+      "Định nghĩa R/F/M",
+      "Phát hiện thay đổi hành vi",
+      "Hiệu chỉnh theo mùa vụ và chu kỳ"
+    ],
+    "level": 1
+  },
+  {
+    "id": "pro_retention",
+    "category": "profession",
+    "title": "Giữ chân đại lý mới cần đo thế nào?",
+    "question": "Vì sao đo đại lý còn mua trong một tháng cố định có thể làm sai kết luận về khả năng giữ chân?",
+    "reference": "Cohort theo tháng mở đại lý và theo dõi tỷ lệ còn hoạt động sau 3, 6, 12 tháng giúp so sánh công bằng hơn. Cần định nghĩa “hoạt động” theo sản lượng/tần suất, tránh nhìn nhầm khách chưa đủ thời gian quan sát là churn.",
+    "checkpoints": [
+      "Cohort theo thời điểm bắt đầu",
+      "Cùng khoảng thời gian quan sát",
+      "Định nghĩa retention nhất quán"
+    ],
+    "level": 2
+  },
+  {
+    "id": "pro_pareto",
+    "category": "profession",
+    "title": "Pareto có phải lúc nào cũng 80/20?",
+    "question": "Nếu 15% đại lý tạo ra 75% doanh thu, bạn sẽ phân tích tiếp điều gì?",
+    "reference": "Pareto 80/20 là quy luật kinh nghiệm chứ không phải định luật cố định. Phân tích mức tập trung giúp thấy rủi ro phụ thuộc khách lớn, cơ hội chăm sóc và tiềm năng khách trung bình, nhưng cần phân biệt doanh thu với lợi nhuận.",
+    "checkpoints": [
+      "80/20 không phải hằng số",
+      "Đo mức tập trung",
+      "Xem rủi ro và biên lợi nhuận"
+    ],
+    "level": 1
+  },
+  {
+    "id": "pro_posm",
+    "category": "profession",
+    "title": "Làm sao biết POSM thật sự hiệu quả?",
+    "question": "Sau khi lắp kệ trưng bày, đại lý bán tăng 20%: có đủ căn cứ khẳng định kệ tạo ra tăng trưởng?",
+    "reference": "So sánh trước–sau đơn giản dễ bị nhiễu bởi mùa vụ, chính sách giá và biến động khu vực. Nên dùng nhóm đối chứng tương đồng hoặc thiết kế thử nghiệm, theo dõi chi phí, tăng trưởng bán và thời gian hoàn vốn để ước lượng tác động.",
+    "checkpoints": [
+      "Không đánh đồng tương quan với tác động",
+      "Nhóm đối chứng",
+      "Chi phí và ROI thực tế"
+    ],
+    "level": 2
+  },
+  {
+    "id": "pro_bi",
+    "category": "profession",
+    "title": "Mô hình dữ liệu BI giúp tránh sai KPI thế nào?",
+    "question": "Nếu fact đơn hàng có nhiều dòng hàng và một đại lý xuất hiện nhiều lần, đếm số đại lý thế nào cho đúng?",
+    "reference": "Mô hình star schema tách bảng fact giao dịch và các bảng dimension đại lý, ngày, sản phẩm. Measure DISTINCTCOUNT mã đại lý trong ngữ cảnh lọc thích hợp tránh đếm dòng giao dịch thành số đại lý.",
+    "checkpoints": [
+      "Fact khác dimension",
+      "Grain của dữ liệu",
+      "Distinct count và filter context"
+    ],
+    "level": 2
+  },
+  {
+    "id": "pro_mix",
+    "category": "profession",
+    "title": "Tăng sản lượng có chắc tăng lợi nhuận?",
+    "question": "Nếu chiết khấu sâu giúp bán nhiều nhôm phổ thông, vì sao lợi nhuận ròng có thể giảm?",
+    "reference": "Doanh thu bằng giá × lượng nhưng lợi nhuận còn phụ thuộc giá vốn, chiết khấu và chi phí phục vụ. Product mix chuyển về nhóm biên thấp có thể khiến lãi gộp giảm dù sản lượng tăng; cần nhìn contribution margin và rủi ro tồn kho.",
+    "checkpoints": [
+      "Phân biệt sản lượng doanh thu lợi nhuận",
+      "Biên lợi nhuận theo nhóm",
+      "Chi phí và trade-off"
+    ],
+    "level": 2
+  }
+]

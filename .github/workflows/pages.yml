@@ -1,0 +1,46 @@
+name: Publish MỞ MANG
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - run: npm test
+      - uses: actions/configure-pages@v5
+      - name: Prepare public files
+        run: |
+          mkdir -p _site/{assets,content,src}
+          cp .nojekyll index.html styles.css sw.js manifest.webmanifest _site/
+          cp assets/icon-192.png assets/icon-512.png _site/assets/
+          cp content/curriculum-c-28-days.json _site/content/
+          cp src/{ai,app,curriculum,scheduler,storage,topics}.js _site/src/
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v4
+        id: deployment
